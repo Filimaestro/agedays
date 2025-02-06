@@ -64,14 +64,15 @@
     </style>
     <script>
         function formatDateToDutch(date) {
-            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const options = { day: 'numeric', month: 'long', year: '2-digit' };
             return date.toLocaleDateString('nl-NL', options);
         }
 
         function calculateAgeInDays() {
-            let birthDate = document.getElementById("birthdate").value;
-            if (birthDate) {
-                let birth = new Date(birthDate);
+            let birthDateInput = document.getElementById("birthdate").value;
+            let birthDateParts = birthDateInput.split("-");
+            if (birthDateParts.length === 3) {
+                let birth = new Date(`20${birthDateParts[2]}-${birthDateParts[1]}-${birthDateParts[0]}`);
                 let today = new Date();
                 let diffTime = today - birth;
                 let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -90,7 +91,7 @@
                 generateImage(diffDays);
                 document.getElementById("shareButtons").style.display = "block";
             } else {
-                document.getElementById("result").innerText = "Vul een geldige geboortedatum in.";
+                document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJ).";
             }
         }
 
@@ -142,7 +143,7 @@
     <h2>Bereken je leeftijd in dagen</h2>
     <form>
         <label for="birthdate">Geboortedatum:</label>
-        <input type="text" id="birthdate" placeholder="DD-MM-JJJJ" pattern="\\d{2}-\\d{2}-\\d{4}" required>
+        <input type="text" id="birthdate" placeholder="DD-MM-JJ" pattern="\d{2}-\d{2}-\d{2}" required>
         <button type="button" onclick="calculateAgeInDays()">Bereken</button>
     </form>
     <p id="result"></p>
