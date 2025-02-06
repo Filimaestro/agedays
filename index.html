@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leeftijd in dagen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        canvas {
+            margin-top: 20px;
+            border: 2px solid #333;
+            background-color: white;
+        }
+        #shareButtons {
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function formatDateToDutch(date) {
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('nl-NL', options);
+        }
+
+        function calculateAgeInDays() {
+            let birthDate = document.getElementById("birthdate").value;
+            if (birthDate) {
+                let birth = new Date(birthDate);
+                let today = new Date();
+                let diffTime = today - birth;
+                let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                
+                let milestones = [5000, 10000, 12345, 20000, 25000];
+                let milestoneText = "";
+                
+                milestones.forEach(milestone => {
+                    let milestoneDate = new Date(birth.getTime() + (milestone * 24 * 60 * 60 * 1000));
+                    let todayDate = new Date().setHours(0, 0, 0, 0);
+                    let milestoneStatus = milestoneDate < todayDate ? "was" : "wordt";
+                    milestoneText += `Je ${milestoneStatus} ${milestone} dagen oud op: ${formatDateToDutch(milestoneDate)}<br>`;
+                });
+                
+                document.getElementById("result").innerHTML = `Je bent ${diffDays} dagen oud.<br><br>${milestoneText}`;
+                generateImage(diffDays);
+                document.getElementById("shareButtons").style.display = "block";
+            } else {
+                document.getElementById("result").innerText = "Vul een geldige geboortedatum in.";
+            }
+        }
+
+        function generateImage(days) {
+            let canvas = document.getElementById("ageCanvas");
+            let ctx = canvas.getContext("2d");
+            
+            canvas.width = 500;
+            canvas.height = 300;
+            
+            ctx.fillStyle = "#FFD700";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = "#000";
+            ctx.font = "30px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("Hoera! Vandaag ben ik", canvas.width / 2, 100);
+            ctx.fillText(days + " dagen oud!", canvas.width / 2, 160);
+        }
+
+        function shareImage() {
+            let canvas = document.getElementById("ageCanvas");
+            canvas.toBlob(async function(blob) {
+                const file = new File([blob], "leeftijd-in-dagen.png", { type: "image/png" });
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: "Mijn leeftijd in dagen!",
+                            text: "Hoera! Vandaag ben ik zoveel dagen oud!"
+                        });
+                    } catch (error) {
+                        console.log("Delen geannuleerd", error);
+                    }
+                } else {
+                    alert("Delen via Web Share API wordt niet ondersteund op deze browser.");
+                }
+            }, "image/png");
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!navigator.share) {
+                document.getElementById("shareButton").style.display = "none";
+            }
+        });
+    </script>
+</head>
+<body>
+    <h2>Bereken je leeftijd in dagen</h2>
+    <form>
+        <label for="birthdate">Geboortedatum:</label>
+        <input type="date" id="birthdate" required>
+        <button type="button" onclick="calculateAgeInDays()">Bereken</button>
+    </form>
+    <p id="result"></p>
+    <canvas id="ageCanvas"></canvas>
+    <br>
+    <div id="shareButtons" style="display: none;">
+        <button onclick="shareImage()" id="shareButton">Deel afbeelding</button>
+    </div>
+</body>
+</html>
