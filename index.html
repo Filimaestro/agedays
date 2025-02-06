@@ -64,7 +64,7 @@
     </style>
     <script>
         function formatDateToDutch(date) {
-            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
             return date.toLocaleDateString('nl-NL', options);
         }
 
@@ -142,7 +142,7 @@
     <h2>Bereken je leeftijd in dagen</h2>
     <form>
         <label for="birthdate">Geboortedatum:</label>
-        <input type="date" id="birthdate" required>
+        <input type="text" id="birthdate" placeholder="DD-MM-JJJJ" pattern="\\d{2}-\\d{2}-\\d{4}" required>
         <button type="button" onclick="calculateAgeInDays()">Bereken</button>
     </form>
     <p id="result"></p>
