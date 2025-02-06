@@ -64,15 +64,29 @@
     </style>
     <script>
         function formatDateToDutch(date) {
-            const options = { day: 'numeric', month: 'long', year: '2-digit' };
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
             return date.toLocaleDateString('nl-NL', options);
+        }
+
+        function formatInput(event) {
+            let input = event.target;
+            let value = input.value.replace(/[^0-9]/g, '');
+            if (value.length > 8) {
+                value = value.substring(0, 8);
+            }
+            if (value.length > 4) {
+                value = value.substring(0, 2) + '-' + value.substring(2, 4) + '-' + value.substring(4);
+            } else if (value.length > 2) {
+                value = value.substring(0, 2) + '-' + value.substring(2);
+            }
+            input.value = value;
         }
 
         function calculateAgeInDays() {
             let birthDateInput = document.getElementById("birthdate").value;
             let birthDateParts = birthDateInput.split("-");
             if (birthDateParts.length === 3) {
-                let birth = new Date(`20${birthDateParts[2]}-${birthDateParts[1]}-${birthDateParts[0]}`);
+                let birth = new Date(`${birthDateParts[2]}-${birthDateParts[1]}-${birthDateParts[0]}`);
                 let today = new Date();
                 let diffTime = today - birth;
                 let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -91,7 +105,7 @@
                 generateImage(diffDays);
                 document.getElementById("shareButtons").style.display = "block";
             } else {
-                document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJ).";
+                document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
             }
         }
 
@@ -136,6 +150,7 @@
             if (!navigator.share) {
                 document.getElementById("shareButton").style.display = "none";
             }
+            document.getElementById("birthdate").addEventListener("input", formatInput);
         });
     </script>
 </head>
@@ -143,7 +158,7 @@
     <h2>Bereken je leeftijd in dagen</h2>
     <form>
         <label for="birthdate">Geboortedatum:</label>
-        <input type="text" id="birthdate" placeholder="DD-MM-JJ" pattern="\d{2}-\d{2}-\d{2}" required>
+        <input type="text" id="birthdate" placeholder="DD-MM-JJJJ" maxlength="10" required>
         <button type="button" onclick="calculateAgeInDays()">Bereken</button>
     </form>
     <p id="result"></p>
