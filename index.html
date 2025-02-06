@@ -126,28 +126,28 @@
             ctx.fillText(days + " dagen oud!", canvas.width / 2, 160);
         }
 
-        function shareImage() {
-            let canvas = document.getElementById("ageCanvas");
+        function shareOnTwitter() {
             let diffDays = document.getElementById("result").innerText.match(/\d+/)[0];
             let shareText = `Ik ben vandaag ${diffDays} dagen oud! Hoe oud ben jij? Bereken het hier: https://filimaestro.github.io/agedays/ #rtvdrenthe`;
-            
+            let url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+            window.open(url, '_blank');
+        }
+
+        function shareImage() {
+            let canvas = document.getElementById("ageCanvas");
             canvas.toBlob(async function(blob) {
                 const file = new File([blob], "leeftijd-in-dagen.png", { type: "image/png" });
                 if (navigator.share) {
                     try {
                         await navigator.share({
                             files: [file],
-                            title: "Mijn leeftijd in dagen!",
-                            text: shareText
+                            title: "Mijn leeftijd in dagen!"
                         });
                     } catch (error) {
                         console.log("Delen geannuleerd", error);
-                        navigator.clipboard.writeText(shareText);
-                        alert("Tekst gekopieerd naar klembord! Deel het handmatig.");
                     }
                 } else {
-                    navigator.clipboard.writeText(shareText);
-                    alert("Tekst gekopieerd naar klembord! Deel het handmatig.");
+                    alert("Delen via Web Share API wordt niet ondersteund op deze browser.");
                 }
             }, "image/png");
         }
@@ -165,6 +165,7 @@
     <br>
     <div id="shareButtons" style="display: none;">
         <button onclick="shareImage()">Deel afbeelding</button>
+        <button onclick="shareOnTwitter()">Deel op X / Twitter</button>
     </div>
 </body>
 </html>
