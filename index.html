@@ -142,9 +142,12 @@
                         });
                     } catch (error) {
                         console.log("Delen geannuleerd", error);
+                        navigator.clipboard.writeText(shareText);
+                        alert("Tekst gekopieerd naar klembord! Deel het handmatig.");
                     }
                 } else {
-                    alert("Delen via Web Share API wordt niet ondersteund op deze browser.");
+                    navigator.clipboard.writeText(shareText);
+                    alert("Tekst gekopieerd naar klembord! Deel het handmatig.");
                 }
             }, "image/png");
         }
