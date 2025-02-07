@@ -109,7 +109,8 @@
         function shareImage() {
             let canvas = document.getElementById("ageCanvas");
             canvas.toBlob(async function(blob) {
-                let imgurLink = await uploadToImgur(blob);
+                                let imgurLink = await uploadToImgur(blob);
+                if (!imgurLink) return;
                 updateMetaTags(imgurLink);
                 let shareUrl = `${window.location.origin}${window.location.pathname}?img=${encodeURIComponent(imgurLink)}`;
                 let shareText = `Ik ben vandaag zoveel dagen oud! Hoe oud ben jij? Bereken het hier:`;
@@ -166,9 +167,10 @@
         }
     
         async function uploadToImgur(blob) {
+            try {
             let formData = new FormData();
             formData.append("image", blob);
-            let response = await fetch("https://api.imgur.com/3/upload", {
+                            let response = await fetch("https://api.imgur.com/3/upload", {
                 method: "POST",
                 headers: {
                     Authorization: `Client-ID 478fee990634702`
@@ -176,7 +178,12 @@
                 body: formData
             });
             let data = await response.json();
-            return data.data.link;
+                            return data.data.link;
+            } catch (error) {
+                console.error("Upload naar Imgur mislukt:", error);
+                alert("Er is een fout opgetreden bij het uploaden van de afbeelding. Probeer opnieuw.");
+                return null;
+            }
         }
     </script>
 </body>
