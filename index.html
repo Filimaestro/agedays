@@ -8,13 +8,13 @@
     <!-- Open Graph Meta Tags for Social Sharing -->
     <meta property="og:title" content="Ik ben vandaag zoveel dagen oud!">
     <meta property="og:description" content="Hoe oud ben jij? Bereken het hier!">
-    <meta property="og:image" id="ogImage" content="https://i.imgur.com/cNglyqZ.png">
+    <meta property="og:image" id="ogImage" content="">
     <meta property="og:url" content="https://filimaestro.github.io/agedays/">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ik ben vandaag zoveel dagen oud!">
     <meta name="twitter:description" content="Hoe oud ben jij? Bereken het hier!">
-    <meta name="twitter:image" id="twitterImage" content="https://i.imgur.com/cNglyqZ.png">
-
+    <meta name="twitter:image" id="twitterImage" content="">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -73,14 +73,21 @@
             }
         }
     </style>
-    <script>
-        const IMGUR_CLIENT_ID = '478fee990634702';
-
-        function formatDateToDutch(date) {
-            const options = { day: 'numeric', month: 'long', year: 'numeric' };
-            return date.toLocaleDateString('nl-NL', options);
-        }
-
+</head>
+<body>
+    <h2>Bereken je leeftijd in dagen</h2>
+    <form>
+        <label for="birthdate">Geboortedatum:</label>
+        <input type="text" id="birthdate" placeholder="DD-MM-JJJJ" maxlength="10" required>
+        <button type="button" onclick="calculateAgeInDays()">Bereken</button>
+    </form>
+    <p id="result"></p>
+    <canvas id="ageCanvas"></canvas>
+    <br>
+    <div id="shareButtons" style="display: none;">
+        <button onclick="shareImage()">Deel afbeelding</button>
+    </div>
+    <script defer>
         function formatInput(event) {
             let input = event.target;
             let value = input.value.replace(/[^0-9]/g, '');
@@ -94,7 +101,11 @@
             }
             input.value = value;
         }
-
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("birthdate").addEventListener("input", formatInput);
+        });
+        
         function calculateAgeInDays() {
             function isValidDate(day, month, year) {
                 let date = new Date(year, month - 1, day);
@@ -111,7 +122,8 @@
                     document.getElementById("result").innerText = "Ongeldige datum! Voer een correcte geboortedatum in.";
                     return;
                 }
-                let birth = new Date(Number(birthDateParts[2]), Number(birthDateParts[1]) - 1, Number(birthDateParts[0]));
+                
+                let birth = new Date(year, month - 1, day);
                 let today = new Date();
                 let diffTime = today - birth;
                 let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -123,7 +135,7 @@
                 document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
             }
         }
-
+    
         function generateImage(days) {
             let canvas = document.getElementById("ageCanvas");
             let ctx = canvas.getContext("2d");
@@ -140,25 +152,8 @@
             ctx.fillText("Hoera! Vandaag ben ik", canvas.width / 2, 100);
             ctx.fillText(days + " dagen oud!", canvas.width / 2, 160);
         }
-
-        function updateMetaTags(imgurLink) {
-            document.querySelector('meta[property="og:image"]').setAttribute("content", imgurLink);
-            document.querySelector('meta[name="twitter:image"]').setAttribute("content", imgurLink);
-            document.querySelector('meta[property="og:url"]').setAttribute("content", window.location.href + '?img=' + encodeURIComponent(imgurLink));
-        
-            document.getElementById("ogImage").setAttribute("content", imgurLink);
-            document.getElementById("twitterImage").setAttribute("content", imgurLink);
-        }
-
+    
         function shareImage() {
-            let canvas = document.getElementById("ageCanvas");
-            canvas.toBlob(async function(blob) {
-                let imgurLink = await uploadToImgur(blob);
-                let shareUrl = `${window.location.origin}${window.location.pathname}?img=${encodeURIComponent(imgurLink)}`;
-                
-                // Redirect naar een unieke URL zodat Twitter/X de afbeelding correct pakt
-                window.location.href = shareUrl;
-            }, "image/png");
             let canvas = document.getElementById("ageCanvas");
             canvas.toBlob(async function(blob) {
                 let imgurLink = await uploadToImgur(blob);
@@ -168,34 +163,6 @@
                 window.open(twitterUrl, '_blank');
             }, "image/png");
         }
-
-        async function uploadToImgur(blob) {
-            let formData = new FormData();
-            formData.append("image", blob);
-            let response = await fetch("https://api.imgur.com/3/upload", {
-                method: "POST",
-                headers: {
-                    Authorization: `Client-ID ${IMGUR_CLIENT_ID}`
-                },
-                body: formData
-            });
-            let data = await response.json();
-            return data.data.link;
-        }
     </script>
-</head>
-<body>
-    <h2>Bereken je leeftijd in dagen</h2>
-    <form>
-        <label for="birthdate">Geboortedatum:</label>
-        <input type="text" id="birthdate" placeholder="DD-MM-JJJJ" maxlength="10" required oninput="formatInput(event)">
-        <button type="button" onclick="calculateAgeInDays()">Bereken</button>
-    </form>
-    <p id="result"></p>
-    <canvas id="ageCanvas"></canvas>
-    <br>
-    <div id="shareButtons" style="display: none;">
-        <button onclick="shareImage()">Deel afbeelding</button>
-    </div>
 </body>
 </html>
