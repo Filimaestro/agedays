@@ -63,6 +63,8 @@
         }
     </style>
     <script>
+        const IMGUR_CLIENT_ID = '478fee990634702'; // Vervang dit met jouw echte Imgur Client ID
+
         function formatDateToDutch(date) {
             const options = { day: 'numeric', month: 'long', year: 'numeric' };
             return date.toLocaleDateString('nl-NL', options);
@@ -126,29 +128,27 @@
             ctx.fillText(days + " dagen oud!", canvas.width / 2, 160);
         }
 
-        function shareOnTwitter() {
-            let diffDays = document.getElementById("result").innerText.match(/\d+/)[0];
-            let shareText = `Ik ben vandaag ${diffDays} dagen oud! Hoe oud ben jij? Bereken het hier: https://filimaestro.github.io/agedays/ #rtvdrenthe`;
-            let url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
-            window.open(url, '_blank');
+        async function uploadToImgur(blob) {
+            let formData = new FormData();
+            formData.append("image", blob);
+            let response = await fetch("https://api.imgur.com/3/upload", {
+                method: "POST",
+                headers: {
+                    Authorization: `Client-ID ${IMGUR_CLIENT_ID}`
+                },
+                body: formData
+            });
+            let data = await response.json();
+            return data.data.link;
         }
 
         function shareImage() {
             let canvas = document.getElementById("ageCanvas");
             canvas.toBlob(async function(blob) {
-                const file = new File([blob], "leeftijd-in-dagen.png", { type: "image/png" });
-                if (navigator.share) {
-                    try {
-                        await navigator.share({
-                            files: [file],
-                            title: "Mijn leeftijd in dagen!"
-                        });
-                    } catch (error) {
-                        console.log("Delen geannuleerd", error);
-                    }
-                } else {
-                    alert("Delen via Web Share API wordt niet ondersteund op deze browser.");
-                }
+                let imgurLink = await uploadToImgur(blob);
+                let shareText = `Ik ben vandaag zoveel dagen oud! Hoe oud ben jij? Bereken het hier: ${imgurLink} #rtvdrenthe`;
+                let twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+                window.open(twitterUrl, '_blank');
             }, "image/png");
         }
     </script>
@@ -165,7 +165,6 @@
     <br>
     <div id="shareButtons" style="display: none;">
         <button onclick="shareImage()">Deel afbeelding</button>
-        <button onclick="shareOnTwitter()">Deel op X / Twitter</button>
     </div>
 </body>
 </html>
