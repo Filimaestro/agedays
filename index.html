@@ -112,7 +112,7 @@
                                 let imgurLink = await uploadToImgur(blob);
                 if (!imgurLink) return;
                 updateMetaTags(imgurLink);
-                let shareUrl = `${window.location.origin}${window.location.pathname}?img=${encodeURIComponent(imgurLink)}`;
+                let shareUrl = imgurLink;
                 let shareText = `Ik ben vandaag zoveel dagen oud! Hoe oud ben jij? Bereken het hier:`;
                 let twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
                 window.open(twitterUrl, '_blank');
