@@ -185,6 +185,11 @@
                 return null;
             }
         }
+    
+        function updateMetaTags(imgurLink) {
+            document.getElementById("ogImage").setAttribute("content", imgurLink);
+            document.getElementById("twitterImage").setAttribute("content", imgurLink);
+        }
     </script>
 </body>
 </html>
