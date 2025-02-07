@@ -95,6 +95,23 @@
             input.value = value;
         }
 
+        function generateImage(days) {
+            let canvas = document.getElementById("ageCanvas");
+            let ctx = canvas.getContext("2d");
+            
+            canvas.width = 500;
+            canvas.height = 300;
+            
+            ctx.fillStyle = "#AAD700";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = "#000";
+            ctx.font = "30px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("Hoera! Vandaag ben ik", canvas.width / 2, 100);
+            ctx.fillText(days + " dagen oud!", canvas.width / 2, 160);
+        }
+
         function calculateAgeInDays() {
             let birthDateInput = document.getElementById("birthdate").value;
             let birthDateParts = birthDateInput.split("-");
@@ -104,39 +121,12 @@
                 let diffTime = today - birth;
                 let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                 
-                let milestones = [5000, 10000, 12345, 20000, 25000];
-                let milestoneText = "";
-                
-                milestones.forEach(milestone => {
-                    let milestoneDate = new Date(birth.getTime() + (milestone * 24 * 60 * 60 * 1000));
-                    let todayDate = new Date().setHours(0, 0, 0, 0);
-                    let milestoneStatus = milestoneDate < todayDate ? "was" : "wordt";
-                    milestoneText += `Je ${milestoneStatus} ${milestone} dagen oud op: ${formatDateToDutch(milestoneDate)}<br>`;
-                });
-                
-                document.getElementById("result").innerHTML = `Je bent ${diffDays} dagen oud.<br><br>${milestoneText}`;
+                document.getElementById("result").innerHTML = `Je bent ${diffDays} dagen oud.`;
                 generateImage(diffDays);
                 document.getElementById("shareButtons").style.display = "block";
             } else {
                 document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
             }
-        }
-
-        function generateImage(days) {
-            let canvas = document.getElementById("ageCanvas");
-            let ctx = canvas.getContext("2d");
-            
-            canvas.width = 500;
-            canvas.height = 300;
-            
-            ctx.fillStyle = "#FFD700";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = "#000";
-            ctx.font = "30px Arial";
-            ctx.textAlign = "center";
-            ctx.fillText("Hoera! Vandaag ben ik", canvas.width / 2, 100);
-            ctx.fillText(days + " dagen oud!", canvas.width / 2, 160);
         }
     </script>
 </head>
