@@ -102,7 +102,7 @@
             canvas.width = 500;
             canvas.height = 300;
             
-            ctx.fillStyle = "#AAD700";
+            ctx.fillStyle = "#FFD700";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             ctx.fillStyle = "#000";
@@ -127,6 +127,30 @@
             } else {
                 document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
             }
+        }
+
+        function shareImage() {
+            let canvas = document.getElementById("ageCanvas");
+            canvas.toBlob(async function(blob) {
+                let imgurLink = await uploadToImgur(blob);
+                let shareText = `Ik ben vandaag zoveel dagen oud! Hoe oud ben jij? Bereken het hier: ${imgurLink} #rtvdrenthe`;
+                let twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+                window.open(twitterUrl, '_blank');
+            }, "image/png");
+        }
+
+        async function uploadToImgur(blob) {
+            let formData = new FormData();
+            formData.append("image", blob);
+            let response = await fetch("https://api.imgur.com/3/upload", {
+                method: "POST",
+                headers: {
+                    Authorization: `Client-ID ${IMGUR_CLIENT_ID}`
+                },
+                body: formData
+            });
+            let data = await response.json();
+            return data.data.link;
         }
     </script>
 </head>
