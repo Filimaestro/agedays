@@ -74,7 +74,7 @@
         }
     </style>
     <script>
-        const IMGUR_CLIENT_ID = '478fee990634702'; // Vervang dit met jouw echte Imgur Client ID
+        const IMGUR_CLIENT_ID = '478fee990634702';
 
         function formatDateToDutch(date) {
             const options = { day: 'numeric', month: 'long', year: 'numeric' };
@@ -95,31 +95,20 @@
             input.value = value;
         }
 
-        function shareImage() {
-            let canvas = document.getElementById("ageCanvas");
-            canvas.toBlob(async function(blob) {
-                let imgurLink = await uploadToImgur(blob);
-                document.getElementById("ogImage").setAttribute("content", imgurLink);
-                document.getElementById("twitterImage").setAttribute("content", imgurLink);
+        function calculateAgeInDays() {
+            let birthDateInput = document.getElementById("birthdate").value;
+            let birthDateParts = birthDateInput.split("-");
+            if (birthDateParts.length === 3) {
+                let birth = new Date(`${birthDateParts[2]}-${birthDateParts[1]}-${birthDateParts[0]}`);
+                let today = new Date();
+                let diffTime = today - birth;
+                let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                 
-                let shareText = `Ik ben vandaag zoveel dagen oud! Hoe oud ben jij? Bereken het hier: https://filimaestro.github.io/agedays/ #rtvdrenthe`;
-                let twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
-                window.open(twitterUrl, '_blank');
-            }, "image/png");
-        }
-
-        async function uploadToImgur(blob) {
-            let formData = new FormData();
-            formData.append("image", blob);
-            let response = await fetch("https://api.imgur.com/3/upload", {
-                method: "POST",
-                headers: {
-                    Authorization: `Client-ID ${IMGUR_CLIENT_ID}`
-                },
-                body: formData
-            });
-            let data = await response.json();
-            return data.data.link;
+                document.getElementById("result").innerHTML = `Je bent ${diffDays} dagen oud.`;
+                document.getElementById("shareButtons").style.display = "block";
+            } else {
+                document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
+            }
         }
     </script>
 </head>
