@@ -96,10 +96,22 @@
         }
 
         function calculateAgeInDays() {
+            function isValidDate(day, month, year) {
+                let date = new Date(year, month - 1, day);
+                return date.getDate() === day && date.getMonth() === month - 1 && date.getFullYear() === year;
+            }
             let birthDateInput = document.getElementById("birthdate").value;
             let birthDateParts = birthDateInput.split("-");
             if (birthDateParts.length === 3) {
-                let birth = new Date(`${birthDateParts[2]}-${birthDateParts[1]}-${birthDateParts[0]}`);
+                let day = Number(birthDateParts[0]);
+                let month = Number(birthDateParts[1]);
+                let year = Number(birthDateParts[2]);
+                
+                if (!isValidDate(day, month, year)) {
+                    document.getElementById("result").innerText = "Ongeldige datum! Voer een correcte geboortedatum in.";
+                    return;
+                }
+                let birth = new Date(Number(birthDateParts[2]), Number(birthDateParts[1]) - 1, Number(birthDateParts[0]));
                 let today = new Date();
                 let diffTime = today - birth;
                 let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
