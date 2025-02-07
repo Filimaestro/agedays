@@ -106,6 +106,18 @@
             document.getElementById("birthdate").addEventListener("input", formatInput);
         });
         
+        function shareImage() {
+            let canvas = document.getElementById("ageCanvas");
+            canvas.toBlob(async function(blob) {
+                let imgurLink = await uploadToImgur(blob);
+                updateMetaTags(imgurLink);
+                let shareUrl = `${window.location.origin}${window.location.pathname}?img=${encodeURIComponent(imgurLink)}`;
+                let shareText = `Ik ben vandaag zoveel dagen oud! Hoe oud ben jij? Bereken het hier:`;
+                let twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+                window.open(twitterUrl, '_blank');
+            }, "image/png");
+        }
+    
         function calculateAgeInDays() {
             function isValidDate(day, month, year) {
                 let date = new Date(year, month - 1, day);
@@ -153,17 +165,6 @@
             ctx.fillText(days + " dagen oud!", canvas.width / 2, 160);
         }
     
-        function shareImage() {
-            let canvas = document.getElementById("ageCanvas");
-            canvas.toBlob(async function(blob) {
-                let imgurLink = await uploadToImgur(blob);
-                updateMetaTags(imgurLink);
-                let shareText = `Ik ben vandaag zoveel dagen oud! Hoe oud ben jij? Bereken het hier: https://filimaestro.github.io/agedays/ #rtvdrenthe`;
-                let twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(imgurLink)}`;
-                window.open(twitterUrl, '_blank');
-            }, "image/png");
-        }
-    
         async function uploadToImgur(blob) {
             let formData = new FormData();
             formData.append("image", blob);
@@ -176,11 +177,6 @@
             });
             let data = await response.json();
             return data.data.link;
-        }
-        
-        function updateMetaTags(imgurLink) {
-            document.getElementById("ogImage").setAttribute("content", imgurLink);
-            document.getElementById("twitterImage").setAttribute("content", imgurLink);
         }
     </script>
 </body>
