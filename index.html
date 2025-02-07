@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leeftijd in dagen</title>
+    
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="Ik ben vandaag zoveel dagen oud!">
+    <meta property="og:description" content="Hoe oud ben jij? Bereken het hier!">
+    <meta property="og:image" id="ogImage" content="">
+    <meta property="og:url" content="https://filimaestro.github.io/agedays/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ik ben vandaag zoveel dagen oud!">
+    <meta name="twitter:description" content="Hoe oud ben jij? Bereken het hier!">
+    <meta name="twitter:image" id="twitterImage" content="">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -84,48 +95,17 @@
             input.value = value;
         }
 
-        function calculateAgeInDays() {
-            let birthDateInput = document.getElementById("birthdate").value;
-            let birthDateParts = birthDateInput.split("-");
-            if (birthDateParts.length === 3) {
-                let birth = new Date(`${birthDateParts[2]}-${birthDateParts[1]}-${birthDateParts[0]}`);
-                let today = new Date();
-                let diffTime = today - birth;
-                let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                
-                let milestones = [5000, 10000, 12345, 20000, 25000];
-                let milestoneText = "";
-                
-                milestones.forEach(milestone => {
-                    let milestoneDate = new Date(birth.getTime() + (milestone * 24 * 60 * 60 * 1000));
-                    let todayDate = new Date().setHours(0, 0, 0, 0);
-                    let milestoneStatus = milestoneDate < todayDate ? "was" : "wordt";
-                    milestoneText += `Je ${milestoneStatus} ${milestone} dagen oud op: ${formatDateToDutch(milestoneDate)}<br>`;
-                });
-                
-                document.getElementById("result").innerHTML = `Je bent ${diffDays} dagen oud.<br><br>${milestoneText}`;
-                generateImage(diffDays);
-                document.getElementById("shareButtons").style.display = "block";
-            } else {
-                document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
-            }
-        }
-
-        function generateImage(days) {
+        function shareImage() {
             let canvas = document.getElementById("ageCanvas");
-            let ctx = canvas.getContext("2d");
-            
-            canvas.width = 500;
-            canvas.height = 300;
-            
-            ctx.fillStyle = "#FFD700";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = "#000";
-            ctx.font = "30px Arial";
-            ctx.textAlign = "center";
-            ctx.fillText("Hoera! Vandaag ben ik", canvas.width / 2, 100);
-            ctx.fillText(days + " dagen oud!", canvas.width / 2, 160);
+            canvas.toBlob(async function(blob) {
+                let imgurLink = await uploadToImgur(blob);
+                document.getElementById("ogImage").setAttribute("content", imgurLink);
+                document.getElementById("twitterImage").setAttribute("content", imgurLink);
+                
+                let shareText = `Ik ben vandaag zoveel dagen oud! Hoe oud ben jij? Bereken het hier: https://filimaestro.github.io/agedays/ #rtvdrenthe`;
+                let twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
+                window.open(twitterUrl, '_blank');
+            }, "image/png");
         }
 
         async function uploadToImgur(blob) {
@@ -140,16 +120,6 @@
             });
             let data = await response.json();
             return data.data.link;
-        }
-
-        function shareImage() {
-            let canvas = document.getElementById("ageCanvas");
-            canvas.toBlob(async function(blob) {
-                let imgurLink = await uploadToImgur(blob);
-                let shareText = `Ik ben vandaag zoveel dagen oud! Hoe oud ben jij? Bereken het hier: ${imgurLink} #rtvdrenthe`;
-                let twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
-                window.open(twitterUrl, '_blank');
-            }, "image/png");
         }
     </script>
 </head>
