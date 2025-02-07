@@ -131,7 +131,7 @@
             canvas.width = 500;
             canvas.height = 300;
             
-            ctx.fillStyle = "#AAD700";
+            ctx.fillStyle = "#FFD700";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             ctx.fillStyle = "#000";
@@ -151,6 +151,14 @@
         }
 
         function shareImage() {
+            let canvas = document.getElementById("ageCanvas");
+            canvas.toBlob(async function(blob) {
+                let imgurLink = await uploadToImgur(blob);
+                let shareUrl = `${window.location.origin}${window.location.pathname}?img=${encodeURIComponent(imgurLink)}`;
+                
+                // Redirect naar een unieke URL zodat Twitter/X de afbeelding correct pakt
+                window.location.href = shareUrl;
+            }, "image/png");
             let canvas = document.getElementById("ageCanvas");
             canvas.toBlob(async function(blob) {
                 let imgurLink = await uploadToImgur(blob);
