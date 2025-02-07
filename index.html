@@ -8,12 +8,12 @@
     <!-- Open Graph Meta Tags for Social Sharing -->
     <meta property="og:title" content="Ik ben vandaag zoveel dagen oud!">
     <meta property="og:description" content="Hoe oud ben jij? Bereken het hier!">
-    <meta property="og:image" id="ogImage" content="">
+    <meta property="og:image" id="ogImage" content="https://i.imgur.com/cNglyqZ.png">
     <meta property="og:url" content="https://filimaestro.github.io/agedays/">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ik ben vandaag zoveel dagen oud!">
     <meta name="twitter:description" content="Hoe oud ben jij? Bereken het hier!">
-    <meta name="twitter:image" id="twitterImage" content="">
+    <meta name="twitter:image" id="twitterImage" content="https://i.imgur.com/cNglyqZ.png">
 
     <style>
         body {
@@ -131,7 +131,7 @@
             canvas.width = 500;
             canvas.height = 300;
             
-            ctx.fillStyle = "#FFD700";
+            ctx.fillStyle = "#AAD700";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             ctx.fillStyle = "#000";
@@ -142,6 +142,10 @@
         }
 
         function updateMetaTags(imgurLink) {
+            document.querySelector('meta[property="og:image"]').setAttribute("content", imgurLink);
+            document.querySelector('meta[name="twitter:image"]').setAttribute("content", imgurLink);
+            document.querySelector('meta[property="og:url"]').setAttribute("content", window.location.href + '?img=' + encodeURIComponent(imgurLink));
+        
             document.getElementById("ogImage").setAttribute("content", imgurLink);
             document.getElementById("twitterImage").setAttribute("content", imgurLink);
         }
