@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gedeelde afbeelding</title>
+    
+    <!-- Dynamische Open Graph Meta Tags voor Social Sharing -->
+    <meta property="og:title" content="Ik ben vandaag zoveel dagen oud!">
+    <meta property="og:description" content="Hoe oud ben jij? Bereken het hier!">
+    <meta property="og:image" id="ogImage" content="">
+    <meta property="og:url" content="">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ik ben vandaag zoveel dagen oud!">
+    <meta name="twitter:description" content="Hoe oud ben jij? Bereken het hier!">
+    <meta name="twitter:image" id="twitterImage" content="">
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const imgUrl = urlParams.get("img");
+            
+            if (imgUrl) {
+                document.getElementById("ogImage").setAttribute("content", imgUrl);
+                document.getElementById("twitterImage").setAttribute("content", imgUrl);
+                document.querySelector("meta[property='og:url']").setAttribute("content", window.location.href);
+            }
+        });
+    </script>
+</head>
+<body>
+    <h2>Gedeelde afbeelding</h2>
+    <p>Als je dit ziet, betekent het dat de afbeelding correct is geladen.</p>
+    <img id="sharedImage" src="" alt="Gedeelde afbeelding" style="max-width: 100%; height: auto;">
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const imgUrl = urlParams.get("img");
+            
+            if (imgUrl) {
+                document.getElementById("sharedImage").src = imgUrl;
+            }
+        });
+    </script>
+</body>
+</html>
