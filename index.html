@@ -93,7 +93,7 @@
             let ctx = canvas.getContext("2d");
             let img = new Image();
             img.crossOrigin = "anonymous";
-            img.src = "https://hornedlake.com/wp-content/uploads/2024/02/Website-Art-VertRect.png"; // Vervang met de juiste afbeeldingslink
+            img.src = "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"; // Link naar de achtergrond
             
             img.onload = function() {
                 canvas.width = img.width;
@@ -107,6 +107,10 @@
                 ctx.font = "50px 'Skippy Sharp Regular'";
                 ctx.fillText(days + " oud!", 50, 180);
             };
+          img.onerror = function() {
+    console.error("Afbeelding kon niet worden geladen:", img.src);
+    alert("Fout: Afbeelding kon niet worden geladen. Controleer de URL.");
+};
         }
         
         function calculateAgeInDays() {
