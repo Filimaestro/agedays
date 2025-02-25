@@ -72,6 +72,22 @@
                 height: auto;
             }
         }
+      @font-face {
+    font-family: 'New Rubrik Edge Semibold';
+    src: url('https://jouwwebsite.com/fonts/NewRubrikEdgeSemibold.woff2') format('woff2'),
+         url('https://jouwwebsite.com/fonts/NewRubrikEdgeSemibold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Skippy Sharp Regular';
+    src: url('https://filimaestro.github.io/agedays/Skippy.woff2') format('woff2'),
+         url('https://filimaestro.github.io/agedays/Skippy.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
     </style>
 </head>
 <body>
@@ -105,7 +121,7 @@
                 ctx.fillText("Hoera! Vandaag ben ik", 50, 100);
                 
                 ctx.font = "50px 'Skippy Sharp Regular'";
-                ctx.fillText(days + " oud!", 50, 180);
+                ctx.fillText(days + " dagen oud!", 50, 180);
             };
           img.onerror = function() {
     console.error("Afbeelding kon niet worden geladen:", img.src);
