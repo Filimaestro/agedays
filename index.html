@@ -88,48 +88,34 @@
         <button onclick="shareImage()">Deel afbeelding</button>
     </div>
     <script defer>
-        function formatInput(event) {
-            let input = event.target;
-            let value = input.value.replace(/[^0-9]/g, '');
-            if (value.length > 8) {
-                value = value.substring(0, 8);
-            }
-            if (value.length > 4) {
-                value = value.substring(0, 2) + '-' + value.substring(2, 4) + '-' + value.substring(4);
-            } else if (value.length > 2) {
-                value = value.substring(0, 2) + '-' + value.substring(2);
-            }
-            input.value = value;
-        }
-        
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("birthdate").addEventListener("input", formatInput);
-        });
-        
-        function shareImage() {
+        function generateImage(days) {
             let canvas = document.getElementById("ageCanvas");
-            let image = canvas.toDataURL("image/png");
-            let link = document.createElement("a");
-            link.href = image;
-            link.download = "leeftijd_in_dagen.png";
-            link.click();
+            let ctx = canvas.getContext("2d");
+            let img = new Image();
+            img.crossOrigin = "anonymous";
+            img.src = "C:\Users\Jorn\OneDrive\Documenten\Leeftijd in Dagen\background.png"; // Vervang met de juiste afbeeldingslink
+            
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+                
+                ctx.font = "40px 'New Rubrik Edge Semibold'";
+                ctx.fillStyle = "black";
+                ctx.fillText("Hoera! Vandaag ben ik", 50, 100);
+                
+                ctx.font = "50px 'Skippy Sharp Regular'";
+                ctx.fillText(days + " oud!", 50, 180);
+            };
         }
-    
+        
         function calculateAgeInDays() {
-            function isValidDate(day, month, year) {
-                let date = new Date(year, month - 1, day);
-                return date.getDate() === day && date.getMonth() === month - 1 && date.getFullYear() === year;
-            }
             let birthDateInput = document.getElementById("birthdate").value;
             let birthDateParts = birthDateInput.split("-");
             if (birthDateParts.length === 3) {
                 let day = Number(birthDateParts[0]);
                 let month = Number(birthDateParts[1]);
                 let year = Number(birthDateParts[2]);
-                if (!isValidDate(day, month, year)) {
-                    document.getElementById("result").innerText = "Ongeldige datum! Voer een correcte geboortedatum in.";
-                    return;
-                }
                 let birth = new Date(year, month - 1, day);
                 let today = new Date();
                 let diffTime = today - birth;
