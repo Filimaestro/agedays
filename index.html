@@ -108,15 +108,11 @@
         
         function shareImage() {
             let canvas = document.getElementById("ageCanvas");
-            canvas.toBlob(async function(blob) {
-                                let imgurLink = await uploadToImgur(blob);
-                if (!imgurLink) return;
-                updateMetaTags(imgurLink);
-                let shareUrl = `https://filimaestro.github.io/agedays/share.html?img=${imgurLink}`;
-                let shareText = `Ik ben vandaag zoveel dagen oud! Hoe oud ben jij? Bereken het hier:`;
-                let twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
-                window.open(twitterUrl, '_blank');
-            }, "image/png");
+            let image = canvas.toDataURL("image/png");
+            let link = document.createElement("a");
+            link.href = image;
+            link.download = "leeftijd_in_dagen.png";
+            link.click();
         }
     
         function calculateAgeInDays() {
@@ -130,65 +126,20 @@
                 let day = Number(birthDateParts[0]);
                 let month = Number(birthDateParts[1]);
                 let year = Number(birthDateParts[2]);
-                
                 if (!isValidDate(day, month, year)) {
                     document.getElementById("result").innerText = "Ongeldige datum! Voer een correcte geboortedatum in.";
                     return;
                 }
-                
                 let birth = new Date(year, month - 1, day);
                 let today = new Date();
                 let diffTime = today - birth;
                 let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                
                 document.getElementById("result").innerHTML = `Je bent ${diffDays} dagen oud.`;
                 generateImage(diffDays);
                 document.getElementById("shareButtons").style.display = "block";
             } else {
                 document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
             }
-        }
-    
-        function generateImage(days) {
-            let canvas = document.getElementById("ageCanvas");
-            let ctx = canvas.getContext("2d");
-            
-            canvas.width = 500;
-            canvas.height = 300;
-            
-            ctx.fillStyle = "#FFD700";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = "#000";
-            ctx.font = "30px Arial";
-            ctx.textAlign = "center";
-            ctx.fillText("Hoera! Vandaag ben ik", canvas.width / 2, 100);
-            ctx.fillText(days + " dagen oud!", canvas.width / 2, 160);
-        }
-    
-        async function uploadToImgur(blob) {
-            try {
-            let formData = new FormData();
-            formData.append("image", blob);
-                            let response = await fetch("https://api.imgur.com/3/upload", {
-                method: "POST",
-                headers: {
-                    Authorization: `Client-ID 478fee990634702`
-                },
-                body: formData
-            });
-            let data = await response.json();
-                            return data.data.link;
-            } catch (error) {
-                console.error("Upload naar Imgur mislukt:", error);
-                alert("Er is een fout opgetreden bij het uploaden van de afbeelding. Probeer opnieuw.");
-                return null;
-            }
-        }
-    
-        function updateMetaTags(imgurLink) {
-            document.getElementById("ogImage").setAttribute("content", imgurLink);
-            document.getElementById("twitterImage").setAttribute("content", imgurLink);
         }
     </script>
 </body>
