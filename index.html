@@ -136,7 +136,19 @@ function generateImage(days) {
         const centerX = canvas.width / 2;
 
         document.fonts.ready.then(() => {
-            console.log("Fonts zijn geladen, tekst wordt correct weergegeven.");
+    setTimeout(() => {
+        console.log("Fonts zijn geladen, tekst wordt correct weergegeven.");
+        document.body.style.fontFamily = "'Skippy Sharpie Regular', Arial"; // Forceer de font in de body
+
+        ctx.font = "72px 'New Rubrik Edge Semibold', Arial";
+        ctx.fillStyle = "White";
+        ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.4);
+
+        ctx.font = "100px 'Skippy Sharpie Regular', Arial";
+        ctx.fillStyle = "Black";
+        ctx.fillText(`${days} dagen oud!`, centerX, canvas.height * 0.6);
+    }, 500);
+});
 
             // Hoera! Vandaag ben ik...
             ctx.font = "72px 'New Rubrik Edge', Arial";
