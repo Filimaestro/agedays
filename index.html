@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+                <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
@@ -110,6 +110,7 @@
         <button type="button" id="calculateButton">Bereken</button>
     </form>
     <p id="result"></p>
+    <p id="milestone"></p>
     <canvas id="ageCanvas"></canvas>
     <div id="shareButtons" style="display: none;">
         <button id="downloadButton">Download afbeelding</button>
@@ -184,8 +185,9 @@
                 let diffTime = today - birth;
                 let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                 
-                document.getElementById("result").innerHTML = `Je bent ${diffDays} dagen oud.`;
+                document.getElementById("result").innerText = `Je bent ${diffDays} dagen oud.`;
                 calculateMilestone(diffDays);
+  
                 generateImage(diffDays);
                 document.getElementById("shareButtons").style.display = "block";
             } else {
@@ -198,18 +200,21 @@
     for (let i = 500; i <= 20000; i += 500) {
         milestones.push(i);
     }
-    milestones.push(12345); // Extra mijlpaal
+    milestones.push(12345);
     milestones.sort((a, b) => a - b);
 
     let nextMilestone = milestones.find(m => m > diffDays);
     if (nextMilestone) {
         let daysUntilMilestone = nextMilestone - diffDays;
-        document.getElementById("milestone").innerHTML = `Nog ${daysUntilMilestone} dagen tot je ${nextMilestone} dagen oud bent!`;
+        let milestoneText = `Nog ${daysUntilMilestone} dagen tot je ${nextMilestone} dagen oud bent!`;
+        
+        document.getElementById("milestone").innerText = milestoneText;
         document.getElementById("milestone").style.display = "block";
     } else {
         document.getElementById("milestone").style.display = "none";
     }
 }
+
 
         // Generate the image with the age in days
         function generateImage(days) {
