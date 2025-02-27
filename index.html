@@ -127,6 +127,11 @@
             
             // Set up share button
             document.getElementById("shareButton").addEventListener("click", shareImage);
+            
+            // Preload the background image to check if it exists
+            const preloadImg = new Image();
+            preloadImg.src = "../../background.png";
+            console.log("Attempting to preload background image:", preloadImg.src);
         });
         
         // Format input as DD-MM-YYYY
@@ -187,40 +192,51 @@
         function generateImage(days) {
             let canvas = document.getElementById("ageCanvas");
             let ctx = canvas.getContext("2d");
+            
+            // Set initial canvas size and display
+            canvas.width = 600;  // Default width
+            canvas.height = 400; // Default height
+            canvas.style.display = "block";
+            
             let img = new Image();
             img.crossOrigin = "anonymous";
-            img.src = "../../background.png"; // Updated image path
+            img.src = "../../background.png"; // Image path
             
-            img.onload = function() {
+            console.log("Loading background image:", img.src);
+            
+            // Add event listener to track image loading
+            img.addEventListener('load', function() {
+                console.log("Background image loaded successfully");
+                
+                // Set canvas dimensions to match the image
                 canvas.width = img.width;
                 canvas.height = img.height;
-                canvas.style.display = "block";
+                
+                // Draw the background image
                 ctx.drawImage(img, 0, 0);
+                
+                // Set text alignment to center
+                ctx.textAlign = "center";
+                const centerX = canvas.width / 2;
                 
                 // Use the custom fonts
                 ctx.font = "40px 'New Rubrik Edge Semibold'";
                 ctx.fillStyle = "black";
-                ctx.textAlign = "left";
-                ctx.fillText("Hoera! Vandaag ben ik", 50, 100);
+                ctx.fillText("Hoera! Vandaag ben ik", centerX, 100);
                 
                 ctx.font = "50px 'Skippy Sharp Regular'";
-                ctx.fillText(days + " dagen oud!", 50, 180);
+                ctx.fillText(days + " dagen oud!", centerX, 180);
                 
                 // Update the Open Graph image meta tags
                 const imageUrl = canvas.toDataURL("image/png");
                 document.getElementById("ogImage").content = imageUrl;
                 document.getElementById("twitterImage").content = imageUrl;
-            };
+            });
             
-            img.onerror = function() {
-                console.error("Afbeelding kon niet worden geladen:", img.src);
+            img.addEventListener('error', function() {
+                console.error("Background image failed to load:", img.src);
                 
                 // Fallback to drawing a simple canvas without the background image
-                canvas.width = 600;
-                canvas.height = 400;
-                canvas.style.display = "block";
-                
-                // Set background
                 ctx.fillStyle = "#f8f8f8";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
@@ -229,7 +245,7 @@
                 ctx.lineWidth = 10;
                 ctx.strokeRect(5, 5, canvas.width - 10, canvas.height - 10);
                 
-                // Add text - using system fonts as fallback
+                // Add text using system fonts as fallback
                 ctx.font = "bold 36px Arial";
                 ctx.fillStyle = "#333";
                 ctx.textAlign = "center";
@@ -243,7 +259,7 @@
                 const imageUrl = canvas.toDataURL("image/png");
                 document.getElementById("ogImage").content = imageUrl;
                 document.getElementById("twitterImage").content = imageUrl;
-            };
+            });
         }
         
         // Download the generated image
