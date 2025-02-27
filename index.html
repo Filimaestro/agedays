@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+jiuj<!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
@@ -91,7 +91,17 @@
     <p id="milestone"></p>
     <p id="hendrikje"></p>
     <canvas id="ageCanvas"></canvas>
+        <div id="shareButtons" style="display: none;">
+        <button id="downloadButton">Download afbeelding</button>
+        <button id="shareButton">Deel afbeelding</button>
+    </div>
     <script>
+                    // Set up download button
+            document.getElementById("downloadButton").addEventListener("click", downloadImage);
+            
+            // Set up share button
+            document.getElementById("shareButton").addEventListener("click", shareImage);
+        
         document.getElementById("birthdate").addEventListener("input", function(event) {
     let input = event.target.value.replace(/\D/g, ""); // Alleen cijfers toelaten
     let formatted = "";
@@ -121,7 +131,9 @@ document.getElementById("calculateButton").addEventListener("click", function() 
 
         // Check for Easter egg
     if (dateString === "02-05-1986") {
-        document.getElementById("easter").innerText = "Hey, are you Jörn?";
+        document.getElementById("easter").innerText = "Hey, ben jij Jörn?";
+    } else {
+        return;
     }
     
     // Parse the date
