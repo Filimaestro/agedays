@@ -117,6 +117,11 @@ document.getElementById("calculateButton").addEventListener("click", function() 
         document.getElementById("result").innerText = "Vul een geldige datum in (DD-MM-JJJJ).";
         return;
     }
+
+        // Check for Easter egg
+    if (dateString === "02-05-1986") {
+        document.getElementById("result").innerText = "Hey, are you Jörn?";
+    }
     
     // Parse the date
     let parts = dateString.split("-");
