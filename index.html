@@ -329,15 +329,15 @@ img.onload = function () {
         ctx.font = "100px 'Skippy Sharp Regular'";
         ctx.fillStyle = "Black";
         ctx.fillText(days + " dagen oud!", centerX, canvas.height * 0.6);
-    }, 900);
+    }, 500);
 
-    // Update de Open Graph image meta tags
-    const imageUrl = canvas.toDataURL("image/png");
-    document.getElementById("ogImage").content = imageUrl;
-    document.getElementById("twitterImage").content = imageUrl;
-};
-img.src = "https://filimaestro.github.io/agedays/background.png";
 
+                
+                // Update the Open Graph image meta tags
+                const imageUrl = canvas.toDataURL("image/png");
+                document.getElementById("ogImage").content = imageUrl;
+                document.getElementById("twitterImage").content = imageUrl;
+            });
             
             img.addEventListener('error', function() {
                 console.error("Background image failed to load:", img.src);
@@ -361,6 +361,10 @@ img.src = "https://filimaestro.github.io/agedays/background.png";
                 ctx.fillStyle = "#e40031";
                 ctx.fillText(days + " dagen oud!", canvas.width / 2, 200);
                 
+                // Update the Open Graph image meta tags
+                const imageUrl = canvas.toDataURL("image/png");
+                document.getElementById("ogImage").content = imageUrl;
+                document.getElementById("twitterImage").content = imageUrl;
             });
         }
         
