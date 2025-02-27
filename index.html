@@ -1,4 +1,4 @@
-                <!DOCTYPE html>
+                    <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
@@ -238,18 +238,29 @@ function waitForAssets(callback) {
     let imageLoaded = false;
 
     // Maak een helperfunctie die periodiek controleert of de fonts daadwerkelijk geladen zijn
-    function checkFonts() {
+function checkFonts() {
+    document.fonts.ready.then(() => {
         if (document.fonts.check("12px 'New Rubrik Edge Semibold'") &&
             document.fonts.check("12px 'Skippy Sharp Regular'")) {
             fontsLoaded = true;
-            checkIfReady();
+            console.log("Alle fonts zijn geladen.");
         } else {
-            setTimeout(checkFonts, 50); // Probeer opnieuw na 50ms
+            console.warn("Fonts worden niet herkend, mogelijk verkeerde pad of CORS-probleem.");
         }
-    }
+        checkIfReady();
+    }).catch(() => {
+        console.warn("Fonts niet volledig geladen, doorgaan zonder fonts.");
+        fontsLoaded = true;
+        checkIfReady();
+    });
+}
+
+
+
 
     // Start met controleren of de fonts geladen zijn
     checkFonts();
+    console.log(`Fonts geladen: ${document.fonts.check("12px 'New Rubrik Edge Semibold'")}, ${document.fonts.check("12px 'Skippy Sharp Regular'")}`);
 
     // Controleer of de afbeelding is geladen
     img.onload = function () {
@@ -296,7 +307,13 @@ function waitForAssets(callback) {
                 canvas.height = img.height;
                 
                 // Draw the background image
-                ctx.drawImage(img, 0, 0);
+img.onload = function () {
+    console.log("Achtergrondafbeelding geladen, starten met tekenen.");
+    ctx.drawImage(img, 0, 0);
+};
+img.src = "https://filimaestro.github.io/agedays/background.png";
+
+
                 
                 // Set text alignment to center
                 ctx.textAlign = "center";
