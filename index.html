@@ -189,7 +189,7 @@
                 document.getElementById("result").innerText = `Je bent ${diffDays} dagen oud.`;
                 calculateMilestone(diffDays);
                 calculateHendrikjeMilestone(diffDays);
-                generateImage(diffDays);
+                waitForAssets(() => generateImage(diffDays));
                 document.getElementById("shareButtons").style.display = "block";
             } else {
                 document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
@@ -228,6 +228,39 @@
     }
 }
 
+      // Wait for all assets to load
+function waitForAssets(callback) {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = "https://filimaestro.github.io/agedays/background.png";
+
+    let fontsLoaded = false;
+    let imageLoaded = false;
+
+    // Controleer of de fonts klaar zijn
+    document.fonts.ready.then(() => {
+        fontsLoaded = true;
+        checkIfReady();
+    });
+
+    // Controleer of de afbeelding is geladen
+    img.onload = function () {
+        imageLoaded = true;
+        checkIfReady();
+    };
+
+    img.onerror = function () {
+        console.error("Achtergrondafbeelding kon niet geladen worden.");
+        imageLoaded = true; // Voorkom dat de functie blijft wachten
+        checkIfReady();
+    };
+
+    function checkIfReady() {
+        if (fontsLoaded && imageLoaded) {
+            callback(); // Pas starten als beide klaar zijn
+        }
+    }
+}
 
         // Generate the image with the age in days
         function generateImage(days) {
