@@ -56,10 +56,14 @@
             margin-top: 20px;
             display: none;
             border: 2px solid #333;
+            margin-left: auto;
+            margin-right: auto;
+            visibility: hidden;
         }
     </style>
 </head>
 <body>
+  <p style="font-family: 'Skippy Sharpie Regular'">Test Skippy Font</p>
     <h2>Bereken je leeftijd in dagen</h2>
     <form>
         <label for="birthdate">Geboortedatum:</label>
@@ -102,19 +106,37 @@
             }
         }
         
-        function generateImage(days) {
-            let canvas = document.getElementById("ageCanvas");
-            let ctx = canvas.getContext("2d");
-            canvas.width = 800;
-            canvas.height = 400;
-            ctx.fillStyle = "#fff";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.font = "36px 'New Rubrik Edge Semibold', Arial";
-            ctx.fillStyle = "#333";
-            ctx.textAlign = "center";
-            ctx.fillText(`Hoera! Vandaag ben ik ${days} dagen oud!`, canvas.width / 2, canvas.height / 2);
-            canvas.style.display = "block";
-        }
+function generateImage(days) {
+    let canvas = document.getElementById("ageCanvas");
+    let ctx = canvas.getContext("2d");
+    let img = new Image();
+    img.src = "https://filimaestro.github.io/agedays/background.png";
+    img.onload = function() {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        ctx.drawImage(img, 0, 0);
+        ctx.textAlign = "center";
+        const centerX = canvas.width / 2;
+
+        document.fonts.ready.then(() => {
+            console.log("Fonts zijn geladen, tekst wordt correct weergegeven.");
+
+            // Hoera! Vandaag ben ik...
+            ctx.font = "72px 'New Rubrik Edge Semibold', Arial";
+            ctx.fillStyle = "White";
+            ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.4);
+
+            // Aantal dagen oud
+            ctx.font = "100px 'Skippy Sharpie Regular', Arial";
+            ctx.fillStyle = "Black";
+            ctx.fillText(`${days} dagen oud!`, centerX, canvas.height * 0.6);
+        });
+
+        canvas.style.visibility = "visible";
+        canvas.style.display = "block";
+    };
+}
+
     </script>
 </body>
 </html>
