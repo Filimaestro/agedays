@@ -109,19 +109,39 @@
 });
 
         
-        document.getElementById("calculateButton").addEventListener("click", function() {
-            let birthDate = new Date(document.getElementById("birthdate").value);
-            if (isNaN(birthDate.getTime())) {
-                document.getElementById("result").innerText = "Vul een geldige geboortedatum in.";
-                return;
-            }
-            let today = new Date();
-            let diffDays = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24));
-            document.getElementById("result").innerText = `Je bent ${diffDays} dagen oud.`;
-            calculateMilestone(diffDays);
-            calculateHendrikjeMilestone(diffDays);
-            generateImage(diffDays);
-        });
+document.getElementById("calculateButton").addEventListener("click", function() {
+    let dateString = document.getElementById("birthdate").value;
+    
+    // Check if format is correct
+    if (!/^\d{2}-\d{2}-\d{4}$/.test(dateString)) {
+        document.getElementById("result").innerText = "Vul een geldige datum in (DD-MM-JJJJ).";
+        return;
+    }
+    
+    // Parse the date
+    let parts = dateString.split("-");
+    let day = parseInt(parts[0], 10);
+    let month = parseInt(parts[1], 10) - 1; // Months are 0-indexed in JS
+    let year = parseInt(parts[2], 10);
+    
+    let birthDate = new Date(year, month, day);
+    
+    // Check if date is valid (e.g., not 31-02-2023)
+    if (birthDate.getDate() !== day || 
+        birthDate.getMonth() !== month || 
+        birthDate.getFullYear() !== year ||
+        birthDate > new Date()) {
+        document.getElementById("result").innerText = "Vul een geldige geboortedatum in.";
+        return;
+    }
+    
+    let today = new Date();
+    let diffDays = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24));
+    document.getElementById("result").innerText = `Je bent ${diffDays} dagen oud.`;
+    calculateMilestone(diffDays);
+    calculateHendrikjeMilestone(diffDays);
+    generateImage(diffDays);
+});
         
         function calculateMilestone(diffDays) {
             const milestones = Array.from({length: 200}, (_, i) => (i + 1) * 500).concat(12345);
