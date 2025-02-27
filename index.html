@@ -121,7 +121,7 @@ document.getElementById("calculateButton").addEventListener("click", function() 
 
         // Check for Easter egg
     if (dateString === "02-05-1986") {
-        document.getElementById("result").innerText = "Hey, are you Jörn?";
+        document.getElementById("easter").innerText = "Hey, are you Jörn?";
     }
     
     // Parse the date
@@ -198,7 +198,44 @@ function generateImage(days) {
         });
     };
 }
-
+       // Download the generated image
+        function downloadImage() {
+            const canvas = document.getElementById("ageCanvas");
+            const imageUrl = canvas.toDataURL("image/png");
+            
+            const link = document.createElement("a");
+            link.href = imageUrl;
+            link.download = "mijn-leeftijd-in-dagen.png";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Share the generated image
+        function shareImage() {
+            const canvas = document.getElementById("ageCanvas");
+            canvas.toBlob(function(blob) {
+                // Check if Web Share API is supported
+                if (navigator.share && navigator.canShare({ files: [new File([blob], 'mijn-leeftijd.png', { type: 'image/png' })] })) {
+                    navigator.share({
+                        title: 'Mijn leeftijd in dagen',
+                        text: document.getElementById("result").innerText,
+                        files: [new File([blob], 'mijn-leeftijd.png', { type: 'image/png' })]
+                    }).catch(error => {
+                        console.error('Delen mislukt:', error);
+                        fallbackShare();
+                    });
+                } else {
+                    fallbackShare();
+                }
+            }, 'image/png');
+        }
+        
+        // Fallback sharing method
+        function fallbackShare() {
+            const resultText = document.getElementById("result").innerText;
+            alert("Deel dit resultaat: " + resultText + "\n\nJe kunt ook de afbeelding downloaden en handmatig delen.");
+        }
     </script>
 </body>
 </html>
