@@ -106,7 +106,7 @@
         });
         
         function calculateMilestone(diffDays) {
-            const milestones = Array.from({length: 90}, (_, i) => (i + 1) * 500).concat(12345);
+            const milestones = Array.from({length: 200}, (_, i) => (i + 1) * 500).concat(12345);
             let nextMilestone = milestones.find(m => m > diffDays);
             if (nextMilestone) {
                 let daysUntil = nextMilestone - diffDays;
