@@ -96,11 +96,13 @@ jiuj<!DOCTYPE html>
         <button id="shareButton">Deel afbeelding</button>
     </div>
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
                     // Set up download button
             document.getElementById("downloadButton").addEventListener("click", downloadImage);
             
             // Set up share button
             document.getElementById("shareButton").addEventListener("click", shareImage);
+        }
         
         document.getElementById("birthdate").addEventListener("input", function(event) {
     let input = event.target.value.replace(/\D/g, ""); // Alleen cijfers toelaten
@@ -132,7 +134,8 @@ document.getElementById("calculateButton").addEventListener("click", function() 
         // Check for Easter egg
     if (dateString === "02-05-1986") {
         document.getElementById("easter").innerText = "Hey, ben jij Jörn?";
-        return;
+    } else {
+        document.getElementById("easter").innerText = "";
     }
     
     // Parse the date
