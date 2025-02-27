@@ -104,6 +104,24 @@
         <button onclick="shareImage()">Deel afbeelding</button>
     </div>
     <script defer>
+        function formatInput(event) {
+            let input = event.target;
+            let value = input.value.replace(/[^0-9]/g, '');
+            if (value.length > 8) {
+                value = value.substring(0, 8);
+            }
+            if (value.length > 4) {
+                value = value.substring(0, 2) + '-' + value.substring(2, 4) + '-' + value.substring(4);
+            } else if (value.length > 2) {
+                value = value.substring(0, 2) + '-' + value.substring(2);
+            }
+            input.value = value;
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("birthdate").addEventListener("input", formatInput);
+        });
+        
         function generateImage(days) {
             let canvas = document.getElementById("ageCanvas");
             let ctx = canvas.getContext("2d");
