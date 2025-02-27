@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+                    <!DOCTYPE html>
 <html lang="nl">
 <head>
     <link rel="preload" href="https://filimaestro.github.io/agedays/NRE_Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
@@ -105,6 +105,9 @@
     </style>
 </head>
 <body>
+  <div id="fontLoader" style="position: absolute; visibility: hidden; font-family: 'New Rubrik Edge Semibold', 'Skippy Sharp Regular';">
+    Bereken je exacte leeftijd in dagen
+</div>
     <h2>Bereken je leeftijd in dagen</h2>
     <form>
         <label for="birthdate">Geboortedatum:</label>
@@ -236,36 +239,7 @@ function waitForAssets(callback) {
     img.crossOrigin = "anonymous";
     img.src = "https://filimaestro.github.io/agedays/background.png";
 
-    let fontsLoaded = false;
     let imageLoaded = false;
-
-    // Maak een helperfunctie die periodiek controleert of de fonts daadwerkelijk geladen zijn
-function checkFonts() {
-    document.fonts.ready.then(() => {
-        setTimeout(() => { // Extra vertraging om er zeker van te zijn dat de fonts echt geladen zijn
-            if (document.fonts.check("12px 'New Rubrik Edge Semibold'") &&
-                document.fonts.check("12px 'Skippy Sharp Regular'")) {
-                fontsLoaded = true;
-                console.log("Alle fonts zijn correct geladen.");
-            } else {
-                console.warn("Fonts worden niet herkend, doorgaan zonder fonts.");
-            }
-            checkIfReady();
-        }, 500); // 500ms extra wachttijd
-    }).catch(() => {
-        console.warn("Fonts niet volledig geladen, doorgaan zonder fonts.");
-        fontsLoaded = true;
-        checkIfReady();
-    });
-}
-
-
-
-
-
-    // Start met controleren of de fonts geladen zijn
-    checkFonts();
-    console.log(`Fonts geladen: ${document.fonts.check("12px 'New Rubrik Edge Semibold'")}, ${document.fonts.check("12px 'Skippy Sharp Regular'")}`);
 
     // Controleer of de afbeelding is geladen
     img.onload = function () {
@@ -280,8 +254,8 @@ function checkFonts() {
     };
 
     function checkIfReady() {
-        if (fontsLoaded && imageLoaded) {
-            callback(); // Pas starten als beide klaar zijn
+        if (imageLoaded) {
+            callback(); // Pas starten als alles klaar is
         }
     }
 }
@@ -326,7 +300,7 @@ img.onload = function () {
         ctx.font = "100px 'Skippy Sharp Regular'";
         ctx.fillStyle = "Black";
         ctx.fillText(days + " dagen oud!", centerX, canvas.height * 0.6);
-    }, 900);
+    }, 500);
 
 
                 
