@@ -185,13 +185,34 @@
                 let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                 
                 document.getElementById("result").innerHTML = `Je bent ${diffDays} dagen oud.`;
+              <p id="milestone" style="display:none; font-weight: bold; color: #e40031; margin-top: 10px;"></p>
+
+                calculateMilestone(diffDays);
                 generateImage(diffDays);
                 document.getElementById("shareButtons").style.display = "block";
             } else {
                 document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
             }
         }
-        
+// Calculate milestones
+      function calculateMilestone(diffDays) {
+    const milestones = [];
+    for (let i = 500; i <= 20000; i += 500) {
+        milestones.push(i);
+    }
+    milestones.push(12345); // Extra mijlpaal
+    milestones.sort((a, b) => a - b);
+
+    let nextMilestone = milestones.find(m => m > diffDays);
+    if (nextMilestone) {
+        let daysUntilMilestone = nextMilestone - diffDays;
+        document.getElementById("milestone").innerText = `Nog ${daysUntilMilestone} dagen tot je ${nextMilestone} dagen oud bent!`;
+        document.getElementById("milestone").style.display = "block";
+    } else {
+        document.getElementById("milestone").style.display = "none";
+    }
+}
+
         // Generate the image with the age in days
         function generateImage(days) {
             let canvas = document.getElementById("ageCanvas");
