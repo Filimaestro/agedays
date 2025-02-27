@@ -223,13 +223,13 @@
                 const centerX = canvas.width / 2;
                 
                 // Use the custom fonts
-                ctx.font = "100px 'New Rubrik Edge Semibold'";
-                ctx.fillStyle = "Black";
-                ctx.fillText("Hoera! Vandaag ben ik", centerX, 300);
-                
-                ctx.font = "150px 'Skippy Sharp Regular'";
+                ctx.font = "300px 'New Rubrik Edge Semibold'";
                 ctx.fillStyle = "White";
-                ctx.fillText(days + " dagen oud!", centerX, 600);
+                ctx.fillText("Hoera! Vandaag ben ik", centerX, 400);
+                
+                ctx.font = "350px 'Skippy Sharp Regular'";
+                ctx.fillStyle = "Black";
+                ctx.fillText(days + " dagen oud!", centerX, 1000);
                 
                 // Update the Open Graph image meta tags
                 const imageUrl = canvas.toDataURL("image/png");
