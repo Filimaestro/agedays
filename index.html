@@ -83,7 +83,7 @@
     <h2>Bereken je leeftijd in dagen</h2>
     <form>
         <label for="birthdate">Geboortedatum:</label>
-        <input type="date" id="birthdate" required>
+        <input type="text" id="birthdate" maxlength="10" placeholder="DD-MM-JJJJ" required>
         <button type="button" id="calculateButton">Bereken</button>
     </form>
     <p id="result"></p>
@@ -91,6 +91,24 @@
     <p id="hendrikje"></p>
     <canvas id="ageCanvas"></canvas>
     <script>
+        document.getElementById("birthdate").addEventListener("input", function(event) {
+    let input = event.target.value.replace(/\D/g, ""); // Alleen cijfers toelaten
+    let formatted = "";
+
+    if (input.length > 0) {
+        formatted += input.substring(0, 2);
+    }
+    if (input.length > 2) {
+        formatted += "-" + input.substring(2, 4);
+    }
+    if (input.length > 4) {
+        formatted += "-" + input.substring(4, 8);
+    }
+
+    event.target.value = formatted;
+});
+
+        
         document.getElementById("calculateButton").addEventListener("click", function() {
             let birthDate = new Date(document.getElementById("birthdate").value);
             if (isNaN(birthDate.getTime())) {
