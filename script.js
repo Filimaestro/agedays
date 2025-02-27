@@ -78,7 +78,7 @@ function calculateHendrikjeMilestone(diffDays) {
 const hendrikjeAge = 42065;
 let daysUntil = hendrikjeAge - diffDays;
 if (daysUntil > 0) {
-document.getElementById("hendrikje").innerText = `Nog ${daysUntil} dagen tot je net zo oud bent als Hendrikje van Andel.`;
+document.getElementById("hendrikje").innerText = `Nog ${daysUntil} dagen tot je net zo oud bent als oudste Nederlander (en Drentse) Hendrikje van Andel-Schipper was.`;
 }
 }
 
