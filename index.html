@@ -303,9 +303,6 @@ function checkFonts() {
             
             console.log("Loading background image:", img.src);
             
-            // Add event listener to track image loading
-            img.addEventListener('load', function() {
-                console.log("Background image loaded successfully");
                 
                 // Set canvas dimensions to match the image
                 canvas.width = img.width;
@@ -337,7 +334,7 @@ img.onload = function () {
                 const imageUrl = canvas.toDataURL("image/png");
                 document.getElementById("ogImage").content = imageUrl;
                 document.getElementById("twitterImage").content = imageUrl;
-            };
+    };
             
             img.addEventListener('error', function() {
                 console.error("Background image failed to load:", img.src);
