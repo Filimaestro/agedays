@@ -118,6 +118,7 @@
     
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            document.fonts.ready.then(() => console.log('Fonts are loaded and ready to use.'));
             // Set up input formatting
             const birthdateInput = document.getElementById("birthdate");
             birthdateInput.addEventListener("input", formatInput);
