@@ -118,7 +118,6 @@
     
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            document.fonts.ready.then(() => console.log('Fonts are loaded and ready to use.'));
             // Set up input formatting
             const birthdateInput = document.getElementById("birthdate");
             birthdateInput.addEventListener("input", formatInput);
@@ -193,50 +192,48 @@
         }
         
         // Generate the image with the age in days
-        function generateImage(days) {
-            let canvas = document.getElementById("ageCanvas");
-            let ctx = canvas.getContext("2d");
-            
-            // Set initial canvas size and display
-            canvas.width = 1000;  // Default width
-            canvas.height = 1000; // Default height
-            canvas.style.display = "block";
-            
-            let img = new Image();
-            img.crossOrigin = "anonymous";
-            img.src = "https://filimaestro.github.io/agedays/background.png"; // Image path
-            
-            console.log("Loading background image:", img.src);
-            
-            // Add event listener to track image loading
-            img.addEventListener('load', function() {
-                console.log("Background image loaded successfully");
-                
-                // Set canvas dimensions to match the image
-                canvas.width = img.width;
-                canvas.height = img.height;
-                
-                // Draw the background image
-                ctx.drawImage(img, 0, 0);
-                
-                // Set text alignment to center
-                ctx.textAlign = "center";
-                const centerX = canvas.width / 2;
-                
-                // Use the custom fonts
-                ctx.font = "72px 'New Rubrik Edge Semibold'";
-                ctx.fillStyle = "White";
-                ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.4);
-                
-                ctx.font = "100px 'Skippy Sharp Regular'";
-                ctx.fillStyle = "Black";
-                ctx.fillText(days + " dagen oud!", centerX, canvas.height * 0.6);
-                
-                // Update the Open Graph image meta tags
-                const imageUrl = canvas.toDataURL("image/png");
-                document.getElementById("ogImage").content = imageUrl;
-                document.getElementById("twitterImage").content = imageUrl;
-            });
+function generateImage(days) {
+    let canvas = document.getElementById("ageCanvas");
+    let ctx = canvas.getContext("2d");
+
+    // Set initial canvas size and display
+    canvas.width = 1000;  // Default width
+    canvas.height = 1000; // Default height
+    canvas.style.display = "block";
+
+    let img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = "https://filimaestro.github.io/agedays/background.png"; // Image path
+
+    console.log("Loading background image:", img.src);
+
+    img.addEventListener('load', function() {
+        console.log("Background image loaded successfully");
+
+        // Set canvas dimensions to match the image
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        // Draw the background image
+        ctx.drawImage(img, 0, 0);
+
+        // Wacht tot de fonts geladen zijn voordat je de tekst tekent
+        document.fonts.ready.then(() => {
+            console.log("Fonts are loaded, drawing text...");
+            ctx.textAlign = "center";
+            const centerX = canvas.width / 2;
+
+            ctx.font = "72px 'New Rubrik Edge Semibold'";
+            ctx.fillStyle = "White";
+            ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.4);
+
+            ctx.font = "100px 'Skippy Sharp Regular'";
+            ctx.fillStyle = "Black";
+            ctx.fillText(days + " dagen oud!", centerX, canvas.height * 0.6);
+        });
+    });
+}
+
             
             img.addEventListener('error', function() {
                 console.error("Background image failed to load:", img.src);
