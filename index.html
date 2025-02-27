@@ -1,6 +1,8 @@
                     <!DOCTYPE html>
 <html lang="nl">
 <head>
+    <link rel="preload" href="https://filimaestro.github.io/agedays/NRE_Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href="https://filimaestro.github.io/agedays/Skippy.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leeftijd in dagen</title>
@@ -240,20 +242,23 @@ function waitForAssets(callback) {
     // Maak een helperfunctie die periodiek controleert of de fonts daadwerkelijk geladen zijn
 function checkFonts() {
     document.fonts.ready.then(() => {
-        if (document.fonts.check("12px 'New Rubrik Edge Semibold'") &&
-            document.fonts.check("12px 'Skippy Sharp Regular'")) {
-            fontsLoaded = true;
-            console.log("Alle fonts zijn geladen.");
-        } else {
-            console.warn("Fonts worden niet herkend, mogelijk verkeerde pad of CORS-probleem.");
-        }
-        checkIfReady();
+        setTimeout(() => { // Extra vertraging om er zeker van te zijn dat de fonts echt geladen zijn
+            if (document.fonts.check("12px 'New Rubrik Edge Semibold'") &&
+                document.fonts.check("12px 'Skippy Sharp Regular'")) {
+                fontsLoaded = true;
+                console.log("Alle fonts zijn correct geladen.");
+            } else {
+                console.warn("Fonts worden niet herkend, doorgaan zonder fonts.");
+            }
+            checkIfReady();
+        }, 500); // 500ms extra wachttijd
     }).catch(() => {
         console.warn("Fonts niet volledig geladen, doorgaan zonder fonts.");
         fontsLoaded = true;
         checkIfReady();
     });
 }
+
 
 
 
@@ -320,13 +325,15 @@ img.src = "https://filimaestro.github.io/agedays/background.png";
                 const centerX = canvas.width / 2;
                 
                 // Use the custom fonts
-                ctx.font = "72px 'New Rubrik Edge Semibold'";
-                ctx.fillStyle = "White";
-                ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.4);
-                
-                ctx.font = "100px 'Skippy Sharp Regular'";
-                ctx.fillStyle = "Black";
-                ctx.fillText(days + " dagen oud!", centerX, canvas.height * 0.6);
+setTimeout(() => {
+    ctx.font = "72px 'New Rubrik Edge Semibold'";
+    ctx.fillStyle = "White";
+    ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.4);
+    
+    ctx.font = "100px 'Skippy Sharp Regular'";
+    ctx.fillStyle = "Black";
+    ctx.fillText(days + " dagen oud!", centerX, canvas.height * 0.6);
+}, 500);
                 
                 // Update the Open Graph image meta tags
                 const imageUrl = canvas.toDataURL("image/png");
