@@ -83,7 +83,7 @@
     <h2>Bereken je leeftijd in dagen</h2>
     <form>
         <label for="birthdate">Geboortedatum:</label>
-        <input type="text" id="birthdate" maxlength="10" placeholder="DD-MM-JJJJ" required>
+        <input type="date" id="birthdate" required>
         <button type="button" id="calculateButton">Bereken</button>
     </form>
     <p id="result"></p>
@@ -92,31 +92,11 @@
     <canvas id="ageCanvas"></canvas>
     <script>
         document.getElementById("calculateButton").addEventListener("click", function() {
-            document.getElementById("birthdate").addEventListener("input", function(event) {
-            let input = event.target.value.replace(/\D/g, ""); // Verwijder niet-numerieke tekens
-            let formatted = "";
-        
-            if (input.length > 0) {
-                formatted += input.substring(0, 2);
-            }
-            if (input.length > 2) {
-                formatted += "-" + input.substring(2, 4);
-            }
-            if (input.length > 4) {
-                formatted += "-" + input.substring(4, 8);
-            }
-        
-            event.target.value = formatted;
-            });
-
-            let parts = document.getElementById("birthdate").value.split("-");
-            if (parts.length === 3) {
-                let birthDate = new Date(parts[2], parts[1] - 1, parts[0]); // Formatteer correct naar JJJJ, MM, DD
-            } else {
+            let birthDate = new Date(document.getElementById("birthdate").value);
+            if (isNaN(birthDate.getTime())) {
                 document.getElementById("result").innerText = "Vul een geldige geboortedatum in.";
                 return;
             }
-
             let today = new Date();
             let diffDays = Math.floor((today - birthDate) / (1000 * 60 * 60 * 24));
             document.getElementById("result").innerText = `Je bent ${diffDays} dagen oud.`;
