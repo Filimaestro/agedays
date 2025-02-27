@@ -166,7 +166,7 @@
                 let year = Number(birthDateParts[2]);
                 
                 // Basic date validation
-                if (month < 1 || month > 12 || day < 1 || day > 31 || year < 1900 || year > new Date().getFullYear()) {
+                if (month < 1 || month > 12 || day < 1 || year < 1900 || year > new Date().getFullYear() || new Date(year, month - 1, day).getDate() !== day) {
                     document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
                     return;
                 }
