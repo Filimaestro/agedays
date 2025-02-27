@@ -87,16 +87,16 @@
         }
         @font-face {
             font-family: 'New Rubrik Edge Semibold';
-            src: url('../../agedays/NRE_Medium.woff2') format('woff2'),
-                 url('../../agedays/NRE_Medium.woff') format('woff');
+            src: url('https://filimaestro.github.io/agedays/NRE_Medium.woff2') format('woff2'),
+                 url('https://filimaestro.github.io/agedays/NRE_Medium.woff') format('woff');
             font-weight: normal;
             font-style: normal;
         }
 
         @font-face {
             font-family: 'Skippy Sharp Regular';
-            src: url('../../agedays/Skippy.woff2') format('woff2'),
-                 url('../../agedays/Skippy.woff') format('woff');
+            src: url('https://filimaestro.github.io/agedays/Skippy.woff2') format('woff2'),
+                 url('https://filimaestro.github.io/agedays/Skippy.woff') format('woff');
             font-weight: normal;
             font-style: normal;
         }
@@ -223,12 +223,13 @@
                 const centerX = canvas.width / 2;
                 
                 // Use the custom fonts
-                ctx.font = "40px 'New Rubrik Edge Semibold'";
-                ctx.fillStyle = "black";
-                ctx.fillText("Hoera! Vandaag ben ik", centerX, 100);
+                ctx.font = "100px 'New Rubrik Edge Semibold'";
+                ctx.fillStyle = "Black";
+                ctx.fillText("Hoera! Vandaag ben ik", centerX, 300);
                 
-                ctx.font = "50px 'Skippy Sharp Regular'";
-                ctx.fillText(days + " dagen oud!", centerX, 180);
+                ctx.font = "150px 'Skippy Sharp Regular'";
+                ctx.fillStyle = "White";
+                ctx.fillText(days + " dagen oud!", centerX, 600);
                 
                 // Update the Open Graph image meta tags
                 const imageUrl = canvas.toDataURL("image/png");
