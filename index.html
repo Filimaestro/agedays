@@ -237,11 +237,19 @@ function waitForAssets(callback) {
     let fontsLoaded = false;
     let imageLoaded = false;
 
-    // Controleer of de fonts klaar zijn
-    document.fonts.ready.then(() => {
-        fontsLoaded = true;
-        checkIfReady();
-    });
+    // Maak een helperfunctie die periodiek controleert of de fonts daadwerkelijk geladen zijn
+    function checkFonts() {
+        if (document.fonts.check("12px 'New Rubrik Edge Semibold'") &&
+            document.fonts.check("12px 'Skippy Sharp Regular'")) {
+            fontsLoaded = true;
+            checkIfReady();
+        } else {
+            setTimeout(checkFonts, 50); // Probeer opnieuw na 50ms
+        }
+    }
+
+    // Start met controleren of de fonts geladen zijn
+    checkFonts();
 
     // Controleer of de afbeelding is geladen
     img.onload = function () {
@@ -261,6 +269,7 @@ function waitForAssets(callback) {
         }
     }
 }
+
 
         // Generate the image with the age in days
         function generateImage(days) {
