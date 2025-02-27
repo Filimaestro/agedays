@@ -65,8 +65,7 @@
     font-display: swap;
     font-weight: normal;
     font-style: normal;
-}
-        
+} 
           @font-face {
     font-family: 'New Rubrik Edge';
     src: url('https://filimaestro.github.io/agedays/NRE_Medium.woff2') format('woff2');
@@ -75,6 +74,7 @@
     font-weight: normal;
     font-style: normal;
         }
+        
     </style>
 </head>
 <body>
@@ -136,32 +136,24 @@ function generateImage(days) {
         const centerX = canvas.width / 2;
 
         document.fonts.ready.then(() => {
-    setTimeout(() => {
-        console.log("Fonts zijn geladen, tekst wordt correct weergegeven.");
-        document.body.style.fontFamily = "'Skippy Sharpie Regular', Arial"; // Forceer de font in de body
+            setTimeout(() => {
+                console.log("Fonts zijn geladen, tekst wordt correct weergegeven.");
+                document.body.style.fontFamily = "'Skippy Sharpie', Arial"; // Forceer de font in de body
 
-        ctx.font = "72px 'New Rubrik Edge Semibold', Arial";
-        ctx.fillStyle = "White";
-        ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.4);
+                // Hoera! Vandaag ben ik...
+                ctx.font = "72px 'New Rubrik Edge', Arial";
+                ctx.fillStyle = "White";
+                ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.4);
 
-        ctx.font = "100px 'Skippy Sharpie Regular', Arial";
-        ctx.fillStyle = "Black";
-        ctx.fillText(`${days} dagen oud!`, centerX, canvas.height * 0.6);
-    }, 500);
-});
-
-            // Hoera! Vandaag ben ik...
-            ctx.font = "72px 'New Rubrik Edge', Arial";
-            ctx.fillStyle = "White";
-            ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.4);
-
-            // Aantal dagen oud
-            ctx.font = "100px 'Skippy Sharpie', Arial";
-            ctx.fillStyle = "Black";
-            ctx.fillText(`${days} dagen oud!`, centerX, canvas.height * 0.6);
+                // Aantal dagen oud
+                ctx.font = "100px 'Skippy Sharpie', Arial";
+                ctx.fillStyle = "Black";
+                ctx.fillText(`${days} dagen oud!`, centerX, canvas.height * 0.6);
+                
+                // Make canvas visible after drawing
+                canvas.style.display = "block";
+            }, 500);
         });
-
-        canvas.style.display = "block";
     };
 }
 
