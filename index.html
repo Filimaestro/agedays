@@ -111,6 +111,7 @@
     </form>
     <p id="result"></p>
     <p id="milestone"></p>
+    <p id="hendrikje"></p>
     <canvas id="ageCanvas"></canvas>
     <div id="shareButtons" style="display: none;">
         <button id="downloadButton">Download afbeelding</button>
@@ -187,7 +188,7 @@
                 
                 document.getElementById("result").innerText = `Je bent ${diffDays} dagen oud.`;
                 calculateMilestone(diffDays);
-  
+                calculateHendrikjeMilestone(diffDays);
                 generateImage(diffDays);
                 document.getElementById("shareButtons").style.display = "block";
             } else {
@@ -212,6 +213,18 @@
         document.getElementById("milestone").style.display = "block";
     } else {
         document.getElementById("milestone").style.display = "none";
+    }
+}
+
+      function calculateHendrikjeMilestone(diffDays) {
+    const hendrikjeAge = 42065;
+    let daysUntilHendrikje = hendrikjeAge - diffDays;
+    
+    if (daysUntilHendrikje > 0) {
+        document.getElementById("hendrikje").innerText = `Nog ${daysUntilHendrikje} dagen tot je net zo oud bent als Hendrikje van Andel.`;
+        document.getElementById("hendrikje").style.display = "block";
+    } else {
+        document.getElementById("hendrikje").style.display = "none";
     }
 }
 
