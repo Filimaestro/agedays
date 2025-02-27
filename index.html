@@ -86,6 +86,7 @@
         <input type="text" id="birthdate" maxlength="10" placeholder="DD-MM-JJJJ" required>
         <button type="button" id="calculateButton">Bereken</button>
     </form>
+    <p id="easter"></p>
     <p id="result"></p>
     <p id="milestone"></p>
     <p id="hendrikje"></p>
@@ -114,7 +115,7 @@ document.getElementById("calculateButton").addEventListener("click", function() 
     
     // Check if format is correct
     if (!/^\d{2}-\d{2}-\d{4}$/.test(dateString)) {
-        document.getElementById("result").innerText = "Vul een geldige datum in (DD-MM-JJJJ).";
+        document.getElementById("easter").innerText = "Vul een geldige datum in (DD-MM-JJJJ).";
         return;
     }
 
