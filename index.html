@@ -119,12 +119,12 @@
     }
 
     event.target.value = formatted;
-    document.getElementById("shareButtons").style.display = "block";
 });
 
         
 document.getElementById("calculateButton").addEventListener("click", function() {
     let dateString = document.getElementById("birthdate").value;
+        document.getElementById("shareButtons").style.display = "block";
     
     // Check if format is correct
     if (!/^\d{2}-\d{2}-\d{4}$/.test(dateString)) {
