@@ -315,31 +315,29 @@ function checkFonts() {
 img.onload = function () {
     console.log("Achtergrondafbeelding geladen, starten met tekenen.");
     ctx.drawImage(img, 0, 0);
+
+    // Set text alignment to center
+    ctx.textAlign = "center";
+    const centerX = canvas.width / 2;
+
+    // Gebruik de aangepaste fonts, met vertraging om ervoor te zorgen dat ze geladen zijn
+    setTimeout(() => {
+        ctx.font = "72px 'New Rubrik Edge Semibold'";
+        ctx.fillStyle = "White";
+        ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.4);
+
+        ctx.font = "100px 'Skippy Sharp Regular'";
+        ctx.fillStyle = "Black";
+        ctx.fillText(days + " dagen oud!", centerX, canvas.height * 0.6);
+    }, 900);
+
+    // Update de Open Graph image meta tags
+    const imageUrl = canvas.toDataURL("image/png");
+    document.getElementById("ogImage").content = imageUrl;
+    document.getElementById("twitterImage").content = imageUrl;
 };
 img.src = "https://filimaestro.github.io/agedays/background.png";
 
-
-                
-                // Set text alignment to center
-                ctx.textAlign = "center";
-                const centerX = canvas.width / 2;
-                
-                // Use the custom fonts
-setTimeout(() => {
-    ctx.font = "72px 'New Rubrik Edge Semibold'";
-    ctx.fillStyle = "White";
-    ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.4);
-    
-    ctx.font = "100px 'Skippy Sharp Regular'";
-    ctx.fillStyle = "Black";
-    ctx.fillText(days + " dagen oud!", centerX, canvas.height * 0.6);
-}, 500);
-                
-                // Update the Open Graph image meta tags
-                const imageUrl = canvas.toDataURL("image/png");
-                document.getElementById("ogImage").content = imageUrl;
-                document.getElementById("twitterImage").content = imageUrl;
-            });
             
             img.addEventListener('error', function() {
                 console.error("Background image failed to load:", img.src);
