@@ -190,6 +190,30 @@
                 document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
             }
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const birthdateInput = document.getElementById("birthdate");
+            birthdateInput.addEventListener("input", formatInput);
+            document.getElementById("calculateButton").addEventListener("click", calculateAgeInDays);
+            document.getElementById("downloadButton").addEventListener("click", downloadImage);
+            document.getElementById("shareButton").addEventListener("click", shareImage);
+            const preloadImg = new Image();
+            preloadImg.src = "https://filimaestro.github.io/agedays/background.png";
+        });
+        
+        function calculateMilestones(days) {
+            let nextMilestone = Math.ceil(days / 500) * 500;
+            let daysToNextMilestone = nextMilestone - days;
+            let specialMilestone = 12345 - days;
+            let tenThousandDate = new Date();
+            tenThousandDate.setDate(tenThousandDate.getDate() + (10000 - days));
+            let tenThousandFormatted = tenThousandDate.toLocaleDateString("nl-NL");
+            let tenThousandText = (10000 > days) ? `Je bent 10.000 dagen oud op ${tenThousandFormatted}.` : `Je was 10.000 dagen oud op ${tenThousandFormatted}.`;
+            let hendrikjeTarget = 42065 - days;
+            return `Nog ${daysToNextMilestone} dagen tot ${nextMilestone}.<br>
+                    ${tenThousandText}<br>
+                    Nog ${hendrikjeTarget} dagen om net zo oud te zijn als Hendrikje van Andel.`;
+        }
         
         // Generate the image with the age in days
         function generateImage(days) {
