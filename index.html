@@ -197,8 +197,8 @@
             let ctx = canvas.getContext("2d");
             
             // Set initial canvas size and display
-            canvas.width = 600;  // Default width
-            canvas.height = 400; // Default height
+            canvas.width = 1000;  // Default width
+            canvas.height = 1000; // Default height
             canvas.style.display = "block";
             
             let img = new Image();
@@ -223,11 +223,11 @@
                 const centerX = canvas.width / 2;
                 
                 // Use the custom fonts
-                ctx.font = "300px 'New Rubrik Edge Semibold'";
+                ctx.font = "100px 'New Rubrik Edge Semibold'";
                 ctx.fillStyle = "White";
                 ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.2);
                 
-                ctx.font = "350px 'Skippy Sharp Regular'";
+                ctx.font = "100px 'Skippy Sharp Regular'";
                 ctx.fillStyle = "Black";
                 ctx.fillText(days + " dagen oud!", centerX, canvas.height * 0.6);
                 
