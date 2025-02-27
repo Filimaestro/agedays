@@ -64,7 +64,9 @@
             background-color: white;
             max-width: 100%;
             height: auto;
-            display: none;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         #shareButtons {
             margin-top: 20px;
@@ -85,6 +87,18 @@
     </style>
 </head>
 <body>
+    <h2>Bereken je leeftijd in dagen</h2>
+    <form>
+        <label for="birthdate">Geboortedatum:</label>
+        <input type="text" id="birthdate" placeholder="DD-MM-JJJJ" maxlength="10" required>
+        <button type="button" onclick="calculateAgeInDays()">Bereken</button>
+    </form>
+    <p id="result"></p>
+    <canvas id="ageCanvas"></canvas>
+    <br>
+    <div id="shareButtons" style="display: none;">
+        <button onclick="shareImage()">Deel afbeelding</button>
+    </div>
     <script>
         function generateImage(days) {
             let canvas = document.getElementById("ageCanvas");
@@ -92,7 +106,7 @@
             
             let img = new Image();
             img.crossOrigin = "anonymous";
-            img.src = "../../background.png";
+            img.src = "background.png";
             
             img.onload = function() {
                 canvas.width = img.width;
@@ -106,6 +120,11 @@
                 
                 ctx.font = "50px 'Skippy Sharp Regular'";
                 ctx.fillText(days + " dagen oud!", canvas.width / 2, canvas.height / 2);
+            };
+
+            img.onerror = function() {
+                console.error("Afbeelding kon niet worden geladen:", img.src);
+                alert("Fout: Afbeelding kon niet worden geladen. Controleer of de afbeelding correct is gehost en toegankelijk is.");
             };
         }
     </script>
