@@ -32,6 +32,7 @@
             display: inline-block;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             max-width: 90%;
+            margin-bottom: 20px;
         }
         button {
             background-color: #e40031;
@@ -41,13 +42,21 @@
             border-radius: 5px;
             cursor: pointer;
             margin: 5px;
+            font-weight: bold;
         }
         button:hover {
             background-color: #c30029;
         }
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
         #result {
             margin-top: 20px;
             font-size: 18px;
+            font-weight: bold;
         }
         canvas {
             margin-top: 20px;
@@ -55,6 +64,7 @@
             background-color: white;
             max-width: 100%;
             height: auto;
+            display: none;
         }
         #shareButtons {
             margin-top: 20px;
@@ -72,22 +82,21 @@
                 height: auto;
             }
         }
-      @font-face {
-    font-family: 'New Rubrik Edge Semibold';
-    src: url('../../agedays/NRE_Medium.woff2') format('woff2'),
-         url('../../agedays/NRE_Medium.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
+        @font-face {
+            font-family: 'New Rubrik Edge Semibold';
+            src: url('../../agedays/NRE_Medium.woff2') format('woff2'),
+                 url('../../agedays/NRE_Medium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
 
-@font-face {
-    font-family: 'Skippy Sharp Regular';
-    src: url('../../agedays/Skippy.woff2') format('woff2'),
-         url('../../agedays/Skippy.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
+        @font-face {
+            font-family: 'Skippy Sharp Regular';
+            src: url('../../agedays/Skippy.woff2') format('woff2'),
+                 url('../../agedays/Skippy.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
     </style>
 </head>
 <body>
@@ -95,75 +104,185 @@
     <form>
         <label for="birthdate">Geboortedatum:</label>
         <input type="text" id="birthdate" placeholder="DD-MM-JJJJ" maxlength="10" required>
-        <button type="button" onclick="calculateAgeInDays()">Bereken</button>
+        <button type="button" id="calculateButton">Bereken</button>
     </form>
     <p id="result"></p>
     <canvas id="ageCanvas"></canvas>
-    <br>
     <div id="shareButtons" style="display: none;">
-        <button onclick="shareImage()">Deel afbeelding</button>
+        <button id="downloadButton">Download afbeelding</button>
+        <button id="shareButton">Deel afbeelding</button>
     </div>
-    <script defer>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Set up input formatting
+            const birthdateInput = document.getElementById("birthdate");
+            birthdateInput.addEventListener("input", formatInput);
+            
+            // Set up calculation button
+            document.getElementById("calculateButton").addEventListener("click", calculateAgeInDays);
+            
+            // Set up download button
+            document.getElementById("downloadButton").addEventListener("click", downloadImage);
+            
+            // Set up share button
+            document.getElementById("shareButton").addEventListener("click", shareImage);
+        });
+        
+        // Format input as DD-MM-YYYY
         function formatInput(event) {
             let input = event.target;
             let value = input.value.replace(/[^0-9]/g, '');
+            
             if (value.length > 8) {
                 value = value.substring(0, 8);
             }
+            
             if (value.length > 4) {
                 value = value.substring(0, 2) + '-' + value.substring(2, 4) + '-' + value.substring(4);
             } else if (value.length > 2) {
                 value = value.substring(0, 2) + '-' + value.substring(2);
             }
+            
             input.value = value;
         }
         
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById("birthdate").addEventListener("input", formatInput);
-        });
-        
-        function generateImage(days) {
-            let canvas = document.getElementById("ageCanvas");
-            let ctx = canvas.getContext("2d");
-            let img = new Image();
-            img.crossOrigin = "anonymous";
-            img.src = "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"; // Link naar de achtergrond
-            
-            img.onload = function() {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
-                
-                ctx.font = "40px 'New Rubrik Edge Semibold'";
-                ctx.fillStyle = "black";
-                ctx.fillText("Hoera! Vandaag ben ik", 50, 100);
-                
-                ctx.font = "50px 'Skippy Sharp Regular'";
-                ctx.fillText(days + " dagen oud!", 50, 180);
-            };
-          img.onerror = function() {
-    console.error("Afbeelding kon niet worden geladen:", img.src);
-    alert("Fout: Afbeelding kon niet worden geladen. Controleer de URL.");
-};
-        }
-        
+        // Calculate age in days
         function calculateAgeInDays() {
             let birthDateInput = document.getElementById("birthdate").value;
             let birthDateParts = birthDateInput.split("-");
+            
             if (birthDateParts.length === 3) {
                 let day = Number(birthDateParts[0]);
                 let month = Number(birthDateParts[1]);
                 let year = Number(birthDateParts[2]);
+                
+                // Basic date validation
+                if (month < 1 || month > 12 || day < 1 || day > 31 || year < 1900 || year > new Date().getFullYear()) {
+                    document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
+                    return;
+                }
+                
                 let birth = new Date(year, month - 1, day);
                 let today = new Date();
+                
+                // Check if birth date is in the future
+                if (birth > today) {
+                    document.getElementById("result").innerText = "De geboortedatum kan niet in de toekomst liggen.";
+                    return;
+                }
+                
                 let diffTime = today - birth;
                 let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                
                 document.getElementById("result").innerHTML = `Je bent ${diffDays} dagen oud.`;
                 generateImage(diffDays);
                 document.getElementById("shareButtons").style.display = "block";
             } else {
                 document.getElementById("result").innerText = "Vul een geldige geboortedatum in (DD-MM-JJJJ).";
             }
+        }
+        
+        // Generate the image with the age in days
+        function generateImage(days) {
+            let canvas = document.getElementById("ageCanvas");
+            let ctx = canvas.getContext("2d");
+            let img = new Image();
+            img.crossOrigin = "anonymous";
+            img.src = "../../background.png"; // Updated image path
+            
+            img.onload = function() {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                canvas.style.display = "block";
+                ctx.drawImage(img, 0, 0);
+                
+                // Use the custom fonts
+                ctx.font = "40px 'New Rubrik Edge Semibold'";
+                ctx.fillStyle = "black";
+                ctx.textAlign = "left";
+                ctx.fillText("Hoera! Vandaag ben ik", 50, 100);
+                
+                ctx.font = "50px 'Skippy Sharp Regular'";
+                ctx.fillText(days + " dagen oud!", 50, 180);
+                
+                // Update the Open Graph image meta tags
+                const imageUrl = canvas.toDataURL("image/png");
+                document.getElementById("ogImage").content = imageUrl;
+                document.getElementById("twitterImage").content = imageUrl;
+            };
+            
+            img.onerror = function() {
+                console.error("Afbeelding kon niet worden geladen:", img.src);
+                
+                // Fallback to drawing a simple canvas without the background image
+                canvas.width = 600;
+                canvas.height = 400;
+                canvas.style.display = "block";
+                
+                // Set background
+                ctx.fillStyle = "#f8f8f8";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Add border
+                ctx.strokeStyle = "#e40031";
+                ctx.lineWidth = 10;
+                ctx.strokeRect(5, 5, canvas.width - 10, canvas.height - 10);
+                
+                // Add text - using system fonts as fallback
+                ctx.font = "bold 36px Arial";
+                ctx.fillStyle = "#333";
+                ctx.textAlign = "center";
+                ctx.fillText("Hoera! Vandaag ben ik", canvas.width / 2, 100);
+                
+                ctx.font = "bold 60px Arial";
+                ctx.fillStyle = "#e40031";
+                ctx.fillText(days + " dagen oud!", canvas.width / 2, 200);
+                
+                // Update the Open Graph image meta tags
+                const imageUrl = canvas.toDataURL("image/png");
+                document.getElementById("ogImage").content = imageUrl;
+                document.getElementById("twitterImage").content = imageUrl;
+            };
+        }
+        
+        // Download the generated image
+        function downloadImage() {
+            const canvas = document.getElementById("ageCanvas");
+            const imageUrl = canvas.toDataURL("image/png");
+            
+            const link = document.createElement("a");
+            link.href = imageUrl;
+            link.download = "mijn-leeftijd-in-dagen.png";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // Share the generated image
+        function shareImage() {
+            const canvas = document.getElementById("ageCanvas");
+            canvas.toBlob(function(blob) {
+                // Check if Web Share API is supported
+                if (navigator.share && navigator.canShare({ files: [new File([blob], 'mijn-leeftijd.png', { type: 'image/png' })] })) {
+                    navigator.share({
+                        title: 'Mijn leeftijd in dagen',
+                        text: document.getElementById("result").innerText,
+                        files: [new File([blob], 'mijn-leeftijd.png', { type: 'image/png' })]
+                    }).catch(error => {
+                        console.error('Delen mislukt:', error);
+                        fallbackShare();
+                    });
+                } else {
+                    fallbackShare();
+                }
+            }, 'image/png');
+        }
+        
+        // Fallback sharing method
+        function fallbackShare() {
+            const resultText = document.getElementById("result").innerText;
+            alert("Deel dit resultaat: " + resultText + "\n\nJe kunt ook de afbeelding downloaden en handmatig delen.");
         }
     </script>
 </body>
