@@ -110,7 +110,14 @@
 
         
         document.getElementById("calculateButton").addEventListener("click", function() {
-            let birthDate = new Date(document.getElementById("birthdate").value);
+            let parts = document.getElementById("birthdate").value.split("-");
+if (parts.length === 3) {
+    let birthDate = new Date(parts[2], parts[1] - 1, parts[0]); // Omzetten naar JJJJ, MM, DD
+} else {
+    document.getElementById("result").innerText = "Vul een geldige geboortedatum in.";
+    return;
+}
+
             if (isNaN(birthDate.getTime())) {
                 document.getElementById("result").innerText = "Vul een geldige geboortedatum in.";
                 return;
