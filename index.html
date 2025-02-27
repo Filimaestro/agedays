@@ -12,7 +12,9 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ik ben vandaag zoveel dagen oud!">
     <meta name="twitter:description" content="Bereken jouw exacte leeftijd in dagen!">
-    <meta name="twitter:image" id="twitterImage" content="">    
+    <meta name="twitter:image" id="twitterImage" content="">
+  
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,24 +59,27 @@
             visibility: hidden;
           
           @font-face {
-    font-family: 'Skippy Sharpie Regular';
+    font-family: 'Skippy Sharpie';
     src: url('https://filimaestro.github.io/agedays/Skippy.woff2') format('woff2');
     src: url('https://filimaestro.github.io/agedays/Skippy.woff') format('woff');
     font-display: swap;
+    font-weight: normal;
+    font-style: normal;
 }
-
+        
           @font-face {
     font-family: 'New Rubrik Edge';
     src: url('https://filimaestro.github.io/agedays/NRE_Medium.woff2') format('woff2');
     src: url('https://filimaestro.github.io/agedays/NRE_Medium.woff') format('woff');
     font-display: swap;
-
+    font-weight: normal;
+    font-style: normal;
         }
     </style>
 </head>
 <body>
-  <p style="font-family: 'Skippy Sharpie Regular'">Test Skippy Font</p>
-    <p style="font-family: 'Skippy Rubrik Edge Medium'">Test Rubrik</p>
+  <p style="font-family: 'Skippy Sharpie'">Test Skippy Font</p>
+    <p style="font-family: 'New Rubrik Edge'">Test Rubrik</p>
     <p>Test Standard Font</p>
     <h2>Bereken je leeftijd in dagen</h2>
     <form>
@@ -139,7 +144,7 @@ function generateImage(days) {
             ctx.fillText("Hoera! Vandaag ben ik", centerX, canvas.height * 0.4);
 
             // Aantal dagen oud
-            ctx.font = "100px 'Skippy Sharpie Regular', Arial";
+            ctx.font = "100px 'Skippy Sharpie', Arial";
             ctx.fillStyle = "Black";
             ctx.fillText(`${days} dagen oud!`, centerX, canvas.height * 0.6);
         });
